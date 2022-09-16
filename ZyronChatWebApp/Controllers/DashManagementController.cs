@@ -4,11 +4,11 @@ using ZyronChatWebApp.Models;
 
 namespace ZyronChatWebApp.Controllers
 {
-    public class HomeController : Controller
+    public class DashManagementController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<DashManagementController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public DashManagementController(ILogger<DashManagementController> logger)
         {
             _logger = logger;
         }
