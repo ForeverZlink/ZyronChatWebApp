@@ -4,7 +4,7 @@ namespace ZyronChatWebApp.Controllers.Account
 {
     public class UserController : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> RegisterUser()
         {
             return View();
         }
