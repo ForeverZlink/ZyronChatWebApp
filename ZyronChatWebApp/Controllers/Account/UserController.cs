@@ -14,8 +14,25 @@ namespace ZyronChatWebApp.Controllers.Account
             Context= dbContext;
             UserManagement= usermanager;    
         }
-        public async Task<IActionResult> RegisterUser(User NewUser)
+        public async Task<IActionResult> RegisterUser(User NewUserInfo)
         {
+            if (ModelState.IsValid)
+            {
+                this.Context.Add(NewUserInfo);
+                this.Context.SaveChanges();
+                
+                var result = await this.UserManagement.CreateAsync(NewUserInfo);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+        {
+                    return View();
+                }
+
+            }
+            
             return null;
         }
     }
