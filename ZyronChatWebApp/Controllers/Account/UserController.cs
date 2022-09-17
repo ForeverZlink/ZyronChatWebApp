@@ -8,9 +8,11 @@ namespace ZyronChatWebApp.Controllers.Account
     public class UserController : Controller
     {
         public UserContext Context { get; set; }
-        public UserController(UserContext dbContext)
+        public UserManager<User> UserManagement { get; set; }
+        public UserController(UserContext dbContext,UserManager<User> usermanager)
         {
             Context= dbContext;
+            UserManagement= usermanager;    
         }
         public async Task<IActionResult> RegisterUser(User NewUser)
         {
