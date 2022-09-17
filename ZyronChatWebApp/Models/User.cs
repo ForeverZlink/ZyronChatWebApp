@@ -1,6 +1,13 @@
-﻿namespace ZyronChatWebApp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ZyronChatWebApp.Models
 {
-    public class Class
+    public class User
     {
+        [Key]
+        public int Id { get; set; } 
+        public string Name { get; set; }    
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }
