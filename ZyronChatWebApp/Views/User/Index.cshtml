@@ -1,0 +1,22 @@
+﻿@model List<string>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<form method="Post" asp-controller="User" asp-action="RegisterUser">
+    <input name="Name" placeholder="Digite seu nome de usuário"/>
+    <input name="Email" type="email" placeholder="Seu email"/>
+    <input name="Password"  type="password" placeholder="Criei sua senha:"/>
+    <input type="submit" class="btn btn-primary" value="Cadastrar"/>
+</form>
+
+@if (Model!=null)
+{
+    <div class="alert alert-danger" role="alert">
+          Não foi possível criar sua conta devido aos seguintes problemas
+    </div>
+    @foreach(var error in @Model){
+        <li>@error</li>
+    }
+}
