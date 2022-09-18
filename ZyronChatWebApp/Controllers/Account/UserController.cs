@@ -15,10 +15,15 @@ namespace ZyronChatWebApp.Controllers.Account
             Context= dbContext;
             UserManagement= usermanager;    
         }
+
+       
         public async Task<IActionResult> Index()
         {
+            
             return View();
         }
+
+        [HttpPost]
         public async Task<IActionResult> RegisterUser(string Name, string Password, string Email)
         {
             
@@ -28,18 +33,24 @@ namespace ZyronChatWebApp.Controllers.Account
             var result = await this.UserManagement.CreateAsync(User, Password);
 
             if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                List<string> ListOfErrors = new List<string>();
+                foreach (var error in result.Errors)
                 {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
 
-                return View();
+                    ModelState.AddModelError(string.Empty, error.Description);
+                   
+                    ListOfErrors.Add(error.Description);
+                    
                 }
+                return View("Index",ListOfErrors);
+                
+            }
+            
 
           
         }
