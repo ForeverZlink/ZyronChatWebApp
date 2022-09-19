@@ -4,12 +4,16 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+
 <form method="Post" asp-controller="User" asp-action="RegisterUser">
-    <input name="Name" placeholder="Digite seu nome de usuário"/>
-    <input name="Email" type="email" placeholder="Seu email"/>
-    <input name="Password"  type="password" placeholder="Criei sua senha:"/>
+    <input class="form-control" name="Name" placeholder="Digite seu nome de usuário"/>
+    <input class="form-control" name="Email" type="email" placeholder="Seu email"/>
+    <input class="form-control" name="Password"  type="password" placeholder="Criei sua senha:"/>
     <input type="submit" class="btn btn-primary" value="Cadastrar"/>
 </form>
+
+
 
 @if (Model!=null)
 {
