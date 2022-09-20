@@ -5,9 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ZyronChatWebApp.Data;
 using ZyronChatWebApp.Models;
+using ZyronChatWebApp.SignalR.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSignalR();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -43,4 +45,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=DashManagement}/{action=Index}/{id?}");
 
+app.MapHub<ChatHub>("/Chat");
 app.Run();
