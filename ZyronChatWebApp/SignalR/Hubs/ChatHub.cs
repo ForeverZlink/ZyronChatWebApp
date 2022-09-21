@@ -8,8 +8,13 @@ namespace ZyronChatWebApp.SignalR.Hubs
         {
             //Send a private message for a other user. 1x1 chat
             
-            return  this.Clients.User(user).SendAsync("ReceiveMessage", message);
+            return  this.Clients.User(user).SendAsync("ReceiveMessagePrivate", message);
            
+        }
+        public Task SendMessageToAll(string user, string message)
+        {
+            
+            return this.Clients.All.SendAsync("ReceiveMessage", user, message);
         }
     }
 }
