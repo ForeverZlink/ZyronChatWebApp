@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Session;
 using Microsoft.EntityFrameworkCore;
 using ZyronChatWebApp.Data;
 using ZyronChatWebApp.Models;
@@ -9,11 +10,13 @@ namespace ZyronChatWebApp.Controllers.Account
     public class UserController : Controller
     {
         public UserContext Context { get; set; }
-        public UserManager<IdentityUser> UserManagement { get; set; }
-        public UserController(UserContext dbContext,UserManager<IdentityUser> usermanager)
+        public SignInManager<UserModelCustom> SignInManager { get; set; }
+        public UserManager<UserModelCustom> UserManagement { get; set; }
+        public UserController(UserContext dbContext, SignInManager<UserModelCustom> SignInManages, UserManager<UserModelCustom> usermanager)
         {
             Context= dbContext;
             UserManagement= usermanager;    
+            SignInManager = SignInManages;
         }
 
        
