@@ -37,6 +37,7 @@ namespace ZyronChatWebApp.Controllers.Account
 
             if (result.Succeeded)
             {
+                await this.SignInManager.SignInAsync(User, true);
                 return RedirectToAction("Index");
             }
             else
