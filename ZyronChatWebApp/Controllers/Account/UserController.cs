@@ -30,7 +30,7 @@ namespace ZyronChatWebApp.Controllers.Account
         public async Task<IActionResult> RegisterUser(string Name, string Password, string Email)
         {
             
-            var User = new IdentityUser { UserName=Name, Email=Email };
+            var User = new UserModelCustom { UserName=Name, Email=Email };
 
             
             var result = await this.UserManagement.CreateAsync(User, Password);
