@@ -10,7 +10,7 @@ using ZyronChatWebApp.Models;
 
 namespace ZyronChatWebApp.Data
 {
-    public class UserContext:IdentityDbContext<IdentityUser>
+    public class UserContext:IdentityDbContext<UserModelCustom>
     {
         public UserContext(DbContextOptions<UserContext> options):base(options)
         { }
