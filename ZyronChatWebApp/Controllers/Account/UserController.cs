@@ -15,7 +15,7 @@ namespace ZyronChatWebApp.Controllers.Account
         public UserController(UserContext dbContext, SignInManager<UserModelCustom> SignInManages, UserManager<UserModelCustom> usermanager)
         {
             Context= dbContext;
-            UserManagement= usermanager;    
+            UserManagement= usermanager;
             SignInManager = SignInManages;
         }
 
@@ -29,7 +29,7 @@ namespace ZyronChatWebApp.Controllers.Account
         [HttpPost]
         public async Task<IActionResult> RegisterUser(string Name, string Password, string Email)
         {
-            
+               
             var User = new UserModelCustom { UserName=Name, Email=Email };
 
             
