@@ -19,7 +19,24 @@ namespace ZyronChatWebApp.Controllers.Account
             SignInManager = SignInManages;
         }
 
-       
+     
+        public async Task<IActionResult> LoginUser(string username)
+        {
+            if (username == null)
+            {
+                return View();
+            }
+
+            var user = this.Context.Users.FirstOrDefault(x => x.UserName == username);
+            
+            if (user!= null) {
+                await this.SignInManager.SignInAsync(user,true);
+                return RedirectToAction("Index");
+            
+            }
+            return View();
+
+        }
         public async Task<IActionResult> Index()
         {
             
@@ -37,8 +54,10 @@ namespace ZyronChatWebApp.Controllers.Account
 
             if (result.Succeeded)
             {
+                string MessageOfSucess = "New user create with sucess";
                 await this.SignInManager.SignInAsync(User, true);
-                return RedirectToAction("Index");
+
+                return RedirectToAction("Index", "DashManagement",MessageOfSucess);
             }
             else
             {
