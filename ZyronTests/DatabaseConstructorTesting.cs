@@ -1,11 +1,12 @@
 ﻿using ZyronChatWebApp;
 using Microsoft.EntityFrameworkCore;
 using ZyronChatWebApp.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 public class DatabaseConstructorTesting
 {
-    private const string ConnectionString = @"Server=(localdb)\mssqllocaldb;Database=EFTestSample;Trusted_Connection=True";
-    private const string ConnectionStringMvcIndependentObjectsOfProductsContext = @"Server=(localdb)\mssqllocaldb;Database=TestMvcIndependentObjectsOfProductsContext;Trusted_Connection=True";
+    private const string ConnectionString = @"Server=(localdb)\mssqllocaldb;Database=TestingUser;Trusted_Connection=True";
     private static readonly object _lock = new();
     private static bool _databaseInitialized;
 
@@ -37,7 +38,7 @@ public class DatabaseConstructorTesting
                 .Options);
 
     }
-
+    
 
 
 }
