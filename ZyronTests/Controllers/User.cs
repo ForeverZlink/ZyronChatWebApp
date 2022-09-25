@@ -12,6 +12,12 @@ namespace ZyronTests.Controllers
 {
     public class User
     {
+        static public UserManager<UserModelCustom> UserManagerInstance{ get; set; }
+        static public SignInManager<UserModelCustom> SignInManager { get; set; }
+        static public UserContext context = new DatabaseConstructorTesting().CreateContext();
+
+        public string SucessReturnControllerActionRedirection = "RedirectToAction";
+
         [Fact]
         public void RegisterUser()
         {
