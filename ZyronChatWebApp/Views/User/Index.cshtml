@@ -4,7 +4,8 @@
     ViewData["Title"] = "Home Page";
 }
 
-    
+
+
 @if (ViewBag.UserCreatedWithSucess =="true")
 {
     <div class="position-relative">
@@ -33,9 +34,6 @@
         <input class="form-control" name="Password"  type="password" placeholder="Criei sua senha:"/>
         <input type="submit" class="btn btn-primary" value="Cadastrar"/>
     </form>
-    
-
-            
 
     @if (Model != null)
     {
@@ -46,6 +44,7 @@
         {
                     <li>@error</li>
         }
+   
     }
            
              
