@@ -20,7 +20,7 @@ namespace ZyronChatWebApp.Controllers.Account
         }
 
      
-        public async Task<IActionResult> LoginUser(string username)
+        public async Task<IActionResult> LoginUser(string username,string password)
         {
             List<string> errors = new List<string>();
             if (username == null)
@@ -31,11 +31,23 @@ namespace ZyronChatWebApp.Controllers.Account
             var user = this.Context.Users.FirstOrDefault(x => x.UserName == username);
             
             if (user!= null) {
-                await this.SignInManager.SignInAsync(user,true);
-                return RedirectToAction("Index");
+                var result = await this.SignInManager.PasswordSignInAsync(user, password,true,false);
+                if (result.Succeeded == true)
+                {
+
+                    return RedirectToAction("Index", "DashManagement");
+                }
+                else
+                {
+                    errors.Add("Não foi possível verificar sua autenticidade. Verifique seus dados e tente novamente");
+                    return View(errors);
+                }
+    
+                
             
             }
-            return View();
+            errors.Add("Não existe nenhum usuário com esse nome");
+            return View(errors);
 
         }
         public async Task<IActionResult> Index()
