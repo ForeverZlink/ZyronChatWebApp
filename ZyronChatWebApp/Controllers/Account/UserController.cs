@@ -22,6 +22,7 @@ namespace ZyronChatWebApp.Controllers.Account
      
         public async Task<IActionResult> LoginUser(string username)
         {
+            List<string> errors = new List<string>();
             if (username == null)
             {
                 return View();
