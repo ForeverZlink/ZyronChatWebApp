@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZyronChatWebApp", "ZyronChatWebApp\ZyronChatWebApp.csproj", "{B0D70170-6F97-4E0F-8BAB-20D6A2855E30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZyronTests", "ZyronTests\ZyronTests.csproj", "{0259D7D0-217F-46A7-833C-A2752C9A8573}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZyronTests", "ZyronTests\ZyronTests.csproj", "{0259D7D0-217F-46A7-833C-A2752C9A8573}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
