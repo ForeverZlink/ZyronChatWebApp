@@ -19,7 +19,7 @@ builder.Services.AddDbContext<UserContext>(
         builder.Configuration.GetConnectionString("UserContext")
         )
     );
-builder.Services.AddIdentity<UserModelCustom,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<UserModelCustom,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<UserContext>()
     ;
 builder.Services.Configure<IdentityOptions>(options =>
