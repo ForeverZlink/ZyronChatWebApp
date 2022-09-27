@@ -57,7 +57,8 @@ namespace ZyronChatWebApp.Controllers.Account
                 string MessageOfSucess = "New user create with sucess";
                 await this.SignInManager.SignInAsync(User, true);
 
-                return RedirectToAction("Index", "DashManagement",MessageOfSucess);
+                ViewBag.UserCreatedWithSucess = "true";
+                return View("Index") ;
             }
             else
             {
