@@ -53,6 +53,24 @@ namespace ZyronTests.Controllers
 
     }
 
+
+    public class FakeUserManager: UserManager<UserModelCustom>
+    {
+        public FakeUserManager() : base(
+                Mock.Of<IUserStore<UserModelCustom>>(),Mock.Of<IOptions<IdentityOptions>>(), 
+                Mock.Of<IPasswordHasher<UserModelCustom>>(), Mock.Of<IEnumerable<IUserValidator<UserModelCustom>>>(),
+                Mock.Of<IEnumerable<IPasswordValidator<UserModelCustom>>>(),Mock.Of<ILookupNormalizer>() ,
+                Mock.Of<IdentityErrorDescriber>(), Mock.Of<IServiceProvider>(), Mock.Of<ILogger<UserManager<UserModelCustom>>>()
+            ){ }
+
+        public Mock<FakeUserManager> MockedVersionObject()
+        {
+            return new Mock<FakeUserManager>();
+        }
+        
+        
+    }
+    
     //Class to change Succeeded property of IdentityResult. Very useful to mock values.
     public class IdentityResultMock : IdentityResult
     {
