@@ -15,9 +15,11 @@ namespace ZyronTests.Controllers
     public class User
     {
         static public UserManager<UserModelCustom> UserManagerInstance{ get; set; }
-        static public SignInManager<UserModelCustom> SignInManager { get; set; }
+        static public SignInManager<UserModelCustom> SignInManagerInstance { get; set; }
         static public UserContext context = new DatabaseConstructorTesting().CreateContext();
 
+        static public Mock<FakeUserManager> mockedFakeUserManager =new FakeUserManager().MockedVersionObject();
+        
         public string SucessReturnControllerActionRedirection = "RedirectToAction";
 
         [Fact]
