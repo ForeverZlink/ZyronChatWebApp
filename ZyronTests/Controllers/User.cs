@@ -42,7 +42,35 @@ namespace ZyronTests.Controllers
         string password = "St;111jklfald";
      
         
-        public string SucessReturnControllerActionRedirection = "RedirectToAction";
+        [Fact]
+        public async void LoginUser__UserExistsInDatabaseAndNotHaveAnyErrors__AllOccursAsExpected()
+        {
+            //mocking  
+            var mockManageUsers = new Mock<UserManager<UserModelCustom>>(Mock.Of<IUserStore<UserModelCustom>>(), null, null, null, null, null, null, null, null);
+
+            
+
+            //setup when PasswordSignInAsync its called 
+            mockedSigninManager.Setup(x => x.PasswordSignInAsync(It.IsAny<UserModelCustom>(),this.password , true, false)).ReturnsAsync(
+                new SigninResultMock());
+
+            //Creation of controller of testing
+            //Here im are adding the UserModel in context, because of this manner will have a entity 
+            //to the controller search in context when necessary
+            context.Users.Add(UserModel);
+            context.SaveChanges();
+
+            this.controller.Context = context;
+            this.controller.SignInManager = mockedSigninManager.Object;
+
+
+            //Testing. In this test, the method dont have any errors and can log the user 
+            //without problems
+            var resultSucessOfLogin = await this.controller.LoginUser(this.UserModel.UserName, password);
+            Assert.IsType<RedirectToActionResult>(resultSucessOfLogin);
+
+        }
+
 
         [Fact]
         public  void RegisterUser()
@@ -77,22 +105,12 @@ namespace ZyronTests.Controllers
 
     }
 
-
-    public class FakeUserManager: UserManager<UserModelCustom>
+    public class SigninResultMock : SignInResult
     {
-        public FakeUserManager() : base(
-                Mock.Of<IUserStore<UserModelCustom>>(),Mock.Of<IOptions<IdentityOptions>>(), 
-                Mock.Of<IPasswordHasher<UserModelCustom>>(), Mock.Of<IEnumerable<IUserValidator<UserModelCustom>>>(),
-                Mock.Of<IEnumerable<IPasswordValidator<UserModelCustom>>>(),Mock.Of<ILookupNormalizer>() ,
-                Mock.Of<IdentityErrorDescriber>(), Mock.Of<IServiceProvider>(), Mock.Of<ILogger<UserManager<UserModelCustom>>>()
-            ){ }
-
-        public Mock<FakeUserManager> MockedVersionObject()
+        public SigninResultMock(bool succeeded = true)
         {
-            return new Mock<FakeUserManager>();
+            this.Succeeded=succeeded;
         }
-        
-        
     }
     
     //Class to change Succeeded property of IdentityResult. Very useful to mock values.
