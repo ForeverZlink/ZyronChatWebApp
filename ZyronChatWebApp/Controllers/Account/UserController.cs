@@ -23,7 +23,7 @@ namespace ZyronChatWebApp.Controllers.Account
         public async Task<IActionResult> LoginUser(string username,string password)
         {
             List<string> errors = new List<string>();
-            if (username == null)
+            if (username == null || password==null )
             {
                 return View();
             }
