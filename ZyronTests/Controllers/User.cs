@@ -73,7 +73,18 @@ namespace ZyronTests.Controllers
 
 
         [Fact]
-        public  void RegisterUser()
+        public async void LoginUser__UsernamePassedAsArgumentIsNull__TheActionReturnAViewResult()
+        {
+            //Arrange
+
+            //Not its necessary pass data or a instance of anything, because the action will verify 
+            //if username its null and will return a view result.
+
+            var resultUsernameNullReturnView =  await this.controller.LoginUser(null, password);
+            
+            Assert.IsType<ViewResult>(resultUsernameNullReturnView);
+            
+        }
         {
             //Data to creation 
             var UserModel = new UserModelCustom() { UserName = "carlos", Email = "carlos@gmail.com" };
