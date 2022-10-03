@@ -24,7 +24,23 @@ namespace ZyronTests.Controllers
         static public SignInManager<UserModelCustom> SignInManagerInstance { get; set; }
         static public UserContext context = new DatabaseConstructorTesting().CreateContext();
 
-        static public Mock<FakeUserManager> mockedFakeUserManager =new FakeUserManager().MockedVersionObject();
+        static public Mock<UserManager<UserModelCustom>> mockedUserManager = new Mock<UserManager<UserModelCustom>>(
+            Mock.Of<IUserStore<UserModelCustom>>(), null, null, null, null, null, null, null, null);
+
+        static public Mock<SignInManager<UserModelCustom>> mockedSigninManager = new Mock<SignInManager<UserModelCustom>>(
+            mockedUserManager.Object,
+              Mock.Of<IHttpContextAccessor>(),
+                Mock.Of<IUserClaimsPrincipalFactory<UserModelCustom>>(),
+                Mock.Of<IOptions<IdentityOptions>>(),
+                Mock.Of<ILogger<SignInManager<UserModelCustom>>>(),
+                Mock.Of<IAuthenticationSchemeProvider>(),
+                Mock.Of<IUserConfirmation<UserModelCustom>>()
+
+        );
+        public UserController controller = new UserController(context, mockedSigninManager.Object, mockedUserManager.Object);
+        public UserModelCustom UserModel = new UserModelCustom() { UserName = "carlos", Email = "carlos@gmail.com" };
+        string password = "St;111jklfald";
+     
         
         public string SucessReturnControllerActionRedirection = "RedirectToAction";
 
