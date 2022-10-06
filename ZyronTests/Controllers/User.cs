@@ -81,6 +81,15 @@ namespace ZyronTests.Controllers
             //if username its null and will return a view result.
 
             var resultUsernameNullReturnView =  await this.controller.LoginUser(null, password);
+        [Fact]
+        public async void LoginUser__UsernameNotExistsInDatabase__ViewResultExpect()
+        {
+            
+            var resultUsernameNotAreInContext = await this.controller.LoginUser("Carlostas", password);
+            
+            Assert.IsType<ViewResult>(resultUsernameNotAreInContext);
+
+        }
             
             Assert.IsType<ViewResult>(resultUsernameNullReturnView);
             
