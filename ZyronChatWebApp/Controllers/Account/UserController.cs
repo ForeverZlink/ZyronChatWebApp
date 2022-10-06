@@ -68,7 +68,7 @@ namespace ZyronChatWebApp.Controllers.Account
             if (result.Succeeded)
             {
 
-                ViewBag.UserCreatedWithSucess = "true";
+                ViewBag.UserCreatedWithSucess = true;
                 return View("Index") ;
             }
             else
