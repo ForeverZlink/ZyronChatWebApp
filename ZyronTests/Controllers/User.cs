@@ -91,7 +91,13 @@ namespace ZyronTests.Controllers
 
         }
             
-            Assert.IsType<ViewResult>(resultUsernameNullReturnView);
+        [Fact]
+        public async void LoginUser__UsernameExistsInDatabaseButThePasswordItsNull()
+        {
+            var resultUserNameExistInDatabaseButPasswordIsNull = await this.controller.LoginUser(UserModel.UserName, null);
+            Assert.IsType<ViewResult>(resultUserNameExistInDatabaseButPasswordIsNull);
+        }
+
             
         }
         {
