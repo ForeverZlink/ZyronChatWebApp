@@ -98,7 +98,20 @@ namespace ZyronTests.Controllers
             Assert.IsType<ViewResult>(resultUserNameExistInDatabaseButPasswordIsNull);
         }
 
+        [Fact]
+        public  async void LoginUser__PasswordNotIsCorrect()
+        {
+            string passwordIncorrect = "hello";
             
+            mockedSigninManager.Setup(
+                x => x.PasswordSignInAsync(It.IsAny<UserModelCustom>(), It.IsAny<string>(), true, false)).ReturnsAsync(new SigninResultMock(false));
+            this.controller.SignInManager = mockedSigninManager.Object;
+           
+
+            //Case the username exists in database, although the password its incorrect
+            var resultPasswordIsIncorrect = await this.controller.LoginUser(UserModel.UserName, passwordIncorrect);
+
+            Assert.IsType<ViewResult>(resultPasswordIsIncorrect);
         }
         {
             //Data to creation 
