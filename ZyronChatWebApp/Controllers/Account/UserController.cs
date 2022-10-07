@@ -26,6 +26,7 @@ namespace ZyronChatWebApp.Controllers.Account
             if (username == null || password==null )
             {
                 ViewBag.LoginWithSucess = false;
+
                 return View();
             }
 
@@ -68,12 +69,13 @@ namespace ZyronChatWebApp.Controllers.Account
 
             if (result.Succeeded)
             {
-
+                
                 ViewBag.UserCreatedWithSucess = true;
                 return View("Index") ;
             }
             else
             {
+                ViewBag.UserCreatedWithSucess = false;
                 List<string> ListOfErrors = new List<string>();
                 foreach (var error in result.Errors)
                 {
