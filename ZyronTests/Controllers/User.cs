@@ -85,7 +85,16 @@ namespace ZyronTests.Controllers
             //Not its necessary pass data or a instance of anything, because the action will verify 
             //if username its null and will return a view result.
 
-            var resultUsernameNullReturnView =  await this.controller.LoginUser(null, password);
+            var resultUsernameNullReturnView = await  this.controller.LoginUser(null, password);
+            
+            var viewResultUsernameNull= Assert.IsType<ViewResult>(resultUsernameNullReturnView);
+
+
+           
+           
+            
+        }
+
         [Fact]
         public async void LoginUser__UsernameNotExistsInDatabase__ViewResultExpect()
         {
