@@ -25,6 +25,7 @@ namespace ZyronChatWebApp.Controllers.Account
             List<string> errors = new List<string>();
             if (username == null || password==null )
             {
+                ViewBag.LoginWithSucess = false;
                 return View();
             }
 
@@ -34,12 +35,12 @@ namespace ZyronChatWebApp.Controllers.Account
                 var result = await this.SignInManager.PasswordSignInAsync(user, password,true,false);
                 if (result.Succeeded == true)
                 {
-
+                    ViewBag.LoginWithSucess = true;
                     return RedirectToAction("Index", "DashManagement");
                 }
                 else
                 {
-                    errors.Add("Não foi possível verificar sua autenticidade. Verifique seus dados e tente novamente");
+                    ViewBag.LoginWithSucess = false;
                     return View(errors);
                 }
     
