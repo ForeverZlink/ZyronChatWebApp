@@ -157,18 +157,21 @@ namespace ZyronTests.Controllers
             var resultUserCreatedWithSucess = Assert.IsType<ViewResult>(result);
             Assert.True( controller.ViewBag.UserCreatedWithSucess);
         }
+        [Fact]
+        public async void RegisterUser__UserCantBeRegistered()
+        {
+            mockedUserManager.Setup(x => x.CreateAsync(It.IsAny<UserModelCustom>(),It.IsAny<string>())).ReturnsAsync(new IdentityResultMock(false));
+            controller.UserManagement = mockedUserManager.Object;
 
-            var control = new UserController(context,null, mockManageUsers.Object);
-            var result = control.RegisterUser(UserModel.UserName,password,UserModel.Email);
+            var ResultUserCantBeRegistered = await controller.RegisterUser(UserModel.UserName, password, UserModel.Email);
+            Assert.NotNull(ResultUserCantBeRegistered);
            
-            //verify if the action can got the user. True result is wanted in this test.
-            Assert.Contains(this.SucessReturnControllerActionRedirection, result.Result.ToString());
+            //Verify type of return 
+            var ResultUserCantBeRegisteredTyped= Assert.IsType<ViewResult>(ResultUserCantBeRegistered);
 
-            mockManageUsers.Setup(x => x.CreateAsync(It.IsAny<UserModelCustom>(), It.IsAny<string>())).ReturnsAsync(new IdentityResultMock(false));
-            control = new UserController(context, null, mockManageUsers.Object);
 
-            var FailedOfCreateUserBecauseSuccededIsFalse= control.RegisterUser(UserModel.UserName, password, UserModel.Email);
-            Assert.Contains("ViewResult", FailedOfCreateUserBecauseSuccededIsFalse.Result.ToString());
+            //Verify ViewBag field 
+            Assert.False(controller.ViewBag.UserCreatedWithSucess); 
         }
 
     }
