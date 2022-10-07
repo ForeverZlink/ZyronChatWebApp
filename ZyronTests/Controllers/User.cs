@@ -67,8 +67,13 @@ namespace ZyronTests.Controllers
             //Testing. In this test, the method dont have any errors and can log the user 
             //without problems
             var resultSucessOfLogin = await this.controller.LoginUser(this.UserModel.UserName, password);
-            Assert.IsType<RedirectToActionResult>(resultSucessOfLogin);
+            var ResultOfLoginTyped =Assert.IsType<RedirectToActionResult>(resultSucessOfLogin);
 
+            //Verify if true are in the field.
+            Assert.True(this.controller.ViewBag.LoginWithSucess);
+
+            //Verify if the controller redirect its the expected
+            Assert.Contains("DashManagement", ResultOfLoginTyped.ControllerName);
         }
 
 
