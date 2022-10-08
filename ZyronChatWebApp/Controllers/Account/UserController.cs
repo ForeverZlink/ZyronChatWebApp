@@ -19,7 +19,17 @@ namespace ZyronChatWebApp.Controllers.Account
             SignInManager = SignInManages;
         }
 
-     
+        public async Task<IActionResult> LogoutUser()
+        {
+            var username = User.FindFirstValue(ClaimTypes.Name);
+            var user = this.Context.Users.FirstOrDefault(x => x.UserName == username);
+            if (user != null)
+            {
+                await this.SignInManager.SignOutAsync();
+                return RedirectToAction("Index", "DashManagement");
+            }
+            return View();
+        }
         public async Task<IActionResult> LoginUser(string username,string password)
         {
             List<string> errors = new List<string>();
