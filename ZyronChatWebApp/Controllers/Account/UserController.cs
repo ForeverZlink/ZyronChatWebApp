@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Session;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using ZyronChatWebApp.Data;
 using ZyronChatWebApp.Models;
 
@@ -52,21 +53,22 @@ namespace ZyronChatWebApp.Controllers.Account
                 else
                 {
                     ViewBag.LoginWithSucess = false;
-                    return View(errors);
-                }
+                        return View(errors);
+                    }
     
                 
             
-            }
-            errors.Add("Não existe nenhum usuário com esse nome");
-            return View(errors);
+                }
+                errors.Add("Não existe nenhum usuário com esse nome");
+                return View(errors);
 
-        }
-        public async Task<IActionResult> Index()
-        {
-            
-            return View();
-        }
+            }
+            public async Task<IActionResult> Index()
+            {
+                
+                
+                return View();
+            }
 
         [HttpPost]
         public async Task<IActionResult> RegisterUser(string Name, string Password, string Email)
