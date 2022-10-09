@@ -14,7 +14,20 @@ namespace ZyronChatWebApp.Data
     {
         public UserContext(DbContextOptions<UserContext> options):base(options)
         { }
-      
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //One to one
+            modelBuilder.Entity<UserModelCustom>()
+                .HasOne<UserScheduleListOfContacts>(s => s.ListOfContacts)
+                .WithOne(ad => ad.User)
+                .HasForeignKey<UserScheduleListOfContacts>(ad => ad.UserId);
+
+            //One to many
+            modelBuilder.Entity<UserScheduleListOfContacts>()
+                .HasMany(x => x.ContactsInformations)
+                .WithOne(x => x.UserScheduleListOfContacts);
+        }
+
     }
 
 }
