@@ -26,6 +26,8 @@ namespace ZyronChatWebApp.Data
             modelBuilder.Entity<UserScheduleListOfContacts>()
                 .HasMany(x => x.ContactsInformations)
                 .WithOne(x => x.UserScheduleListOfContacts);
+            base.OnModelCreating(modelBuilder);
+
         }
 
     }
