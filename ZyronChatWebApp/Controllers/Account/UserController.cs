@@ -42,7 +42,7 @@ namespace ZyronChatWebApp.Controllers.Account
             }
 
             var user = this.Context.Users.FirstOrDefault(x => x.UserName == username);
-            
+
             if (user != null)
             {
                 var result = await this.SignInManager.PasswordSignInAsync(user, password, true, false);
@@ -54,37 +54,43 @@ namespace ZyronChatWebApp.Controllers.Account
                 else
                 {
                     ViewBag.LoginWithSucess = false;
-                        return View(errors);
-                    }
-    
-                
-            
+                    return View(errors);
                 }
-                errors.Add("Não existe nenhum usuário com esse nome");
-                return View(errors);
+
+
 
             }
-            public async Task<IActionResult> Index()
-            {
-                
-                
-                return View();
-            }
+            errors.Add("Não existe nenhum usuário com esse nome");
+            return View(errors);
+
+        }
+        public async Task<IActionResult> Index()
+        {
+
+
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> RegisterUser(string Name, string Password, string Email)
         {
-               
-            var User = new UserModelCustom { UserName=Name, Email=Email };
 
+            var User = new UserModelCustom { UserName = Name, Email = Email };
             
+
             var result = await this.UserManagement.CreateAsync(User, Password);
 
+            
             if (result.Succeeded)
             {
-                
+                //New list now its required, because to create a relationship among UserModelCustom and UserScheduleListOfContacts its necessary
+                // of UserScheduleListOfContacts receive the User.id for identification.
+                var List = new UserScheduleListOfContacts() { UserId = User.Id };
+                this.Context.Add(List);
+                this.Context.SaveChanges();
+
                 ViewBag.UserCreatedWithSucess = true;
-                return View("Index") ;
+                return View("Index");
             }
             else
             {
@@ -94,16 +100,16 @@ namespace ZyronChatWebApp.Controllers.Account
                 {
 
                     ModelState.AddModelError(string.Empty, error.Description);
-                   
-                    ListOfErrors.Add(error.Description);
-                    
-                }
-                return View("Index",ListOfErrors);
-                
-            }
-            
 
-          
+                    ListOfErrors.Add(error.Description);
+
+                }
+                return View("Index", ListOfErrors);
+
+            }
+
+
+
         }
     }
 }
