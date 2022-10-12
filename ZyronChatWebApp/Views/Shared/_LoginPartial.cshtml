@@ -6,17 +6,62 @@
     <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
     </li>
+    
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NewContact">
+      Add New Contact
+    </button>
+
+    <!-- Modal -->
+        <div class="modal fade" id="NewContact" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Create a new contact to comunnicate with him.</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+              <form asp-action="NewContact" asp-controller="ContactsHandler">
+                  <div class="modal-body">
+               
+                           @Html.AntiForgeryToken()
+                                <div class="mb-3">
+                                    <label for="Surname" class="form-label">Surname of contact:</label>
+                               <input class="form-label" name="Surname" placeholder="Surname of contact">
+                               
+                                </div>
+                               <div class="mb-3">
+                                    <label for="NameOfContact" class="form-label">Name of Identification of Account:</label>
+                                   <input name="NameOfContact" class="form-control" placeholder="Indentity value of contact ">
+
+                               </div>
+                           
+
+               
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                  </div>
+              </form>
+        </div>
+      </div>
+    </div>
+    
     <li class="nav-item">
                <a class="btn btn-danger" href="@Url.ActionLink("LogoutUser","User")" role="button">Logout </a>
     </li>
+        
+
 }
 else
 {
+
     <li class="nav-item">
         <a class="nav-link text-dark" href="@Url.ActionLink("Index","User")">Register</a>
     </li>
     <li class="nav-item">
         <a class="nav-link text-dark" href="@Url.ActionLink("LoginUser","User")">Login</a>
     </li>
+
 }
 </ul>
