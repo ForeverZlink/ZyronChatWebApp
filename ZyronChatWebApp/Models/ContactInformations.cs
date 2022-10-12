@@ -12,7 +12,8 @@ namespace ZyronChatWebApp.Models
         public string UsernameOfIdentification { get; set; }
         public string Surname { get; set; }
 
-        public UserScheduleListOfContacts UserScheduleListOfContacts { get; set; }
+        public int IdUserScheduleListOfContacts { get; set; }
+        public UserScheduleListOfContacts? UserScheduleListOfContacts { get; set; }
 
             
     }
