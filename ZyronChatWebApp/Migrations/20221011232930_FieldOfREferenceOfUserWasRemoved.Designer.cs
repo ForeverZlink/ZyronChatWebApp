@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZyronChatWebApp.Data;
 
@@ -11,9 +12,10 @@ using ZyronChatWebApp.Data;
 namespace ZyronChat.Data.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextContextModelSnapshot : ModelSnapshot
+    [Migration("20221011232930_FieldOfREferenceOfUserWasRemoved")]
+    partial class FieldOfREferenceOfUserWasRemoved
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,12 +258,9 @@ namespace ZyronChat.Data.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("UserScheduleListOfContacts");
                 });
@@ -326,23 +325,6 @@ namespace ZyronChat.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("UserScheduleListOfContacts");
-                });
-
-            modelBuilder.Entity("ZyronChatWebApp.Models.UserScheduleListOfContacts", b =>
-                {
-                    b.HasOne("ZyronChatWebApp.Models.UserModelCustom", "User")
-                        .WithOne("UserScheduleListOfContacts")
-                        .HasForeignKey("ZyronChatWebApp.Models.UserScheduleListOfContacts", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ZyronChatWebApp.Models.UserModelCustom", b =>
-                {
-                    b.Navigation("UserScheduleListOfContacts")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ZyronChatWebApp.Models.UserScheduleListOfContacts", b =>
