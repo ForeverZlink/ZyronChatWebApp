@@ -15,8 +15,8 @@ namespace ZyronChatWebApp.Controllers.Account
         public UserManager<UserModelCustom> UserManagement { get; set; }
         public UserController(UserContext dbContext, SignInManager<UserModelCustom> SignInManages, UserManager<UserModelCustom> usermanager)
         {
-            Context= dbContext;
-            UserManagement= usermanager;
+            Context = dbContext;
+            UserManagement = usermanager;
             SignInManager = SignInManages;
         }
 
@@ -31,10 +31,10 @@ namespace ZyronChatWebApp.Controllers.Account
             }
             return View();
         }
-        public async Task<IActionResult> LoginUser(string username,string password)
+        public async Task<IActionResult> LoginUser(string username, string password)
         {
             List<string> errors = new List<string>();
-            if (username == null || password==null )
+            if (username == null || password == null)
             {
                 ViewBag.LoginWithSucess = false;
 
@@ -43,8 +43,9 @@ namespace ZyronChatWebApp.Controllers.Account
 
             var user = this.Context.Users.FirstOrDefault(x => x.UserName == username);
             
-            if (user!= null) {
-                var result = await this.SignInManager.PasswordSignInAsync(user, password,true,false);
+            if (user != null)
+            {
+                var result = await this.SignInManager.PasswordSignInAsync(user, password, true, false);
                 if (result.Succeeded == true)
                 {
                     ViewBag.LoginWithSucess = true;
