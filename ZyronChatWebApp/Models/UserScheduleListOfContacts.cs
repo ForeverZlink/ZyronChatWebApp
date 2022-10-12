@@ -10,8 +10,7 @@ namespace ZyronChatWebApp.Models
 
         public string UserId { get; set; }
         public UserModelCustom User { get; set; }
-
-        public ICollection<ContactInformations> ContactsInformations { get; set; }
+        public  ICollection<ContactInformations> ContactsInformations { get; set; }
             
     }
 }
