@@ -9,13 +9,19 @@
     ViewData["Title"] = "Your list of contacts";
     ViewBag.ContactsInfoList = Model.ContactsInformations.ToArray();
 }
+
 @if(ViewBag.ContactsInfoList!=null)
 {
-    <h3>Seus contatos</h3>
+    <h3 >Seus contatos</h3>
+    <div class="list-group">
+
     @foreach (var contactinfo in ViewBag.ContactsInfoList)
     {
-            <h1>@contactinfo.UsernameOfIdentification</h1>
+            
+                <button type="button" class="list-group-item list-group-item-action list-group-item-dark"><h4>  @contactinfo.UsernameOfIdentification</h4></button>
     }
+
+    </div>
 }
 
 
