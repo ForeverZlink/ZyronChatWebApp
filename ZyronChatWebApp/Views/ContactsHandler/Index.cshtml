@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ZyronChatWebApp.Models
+
+@model ZyronChatWebApp.Models.UserScheduleListOfContacts
+
+
+
+@{
+    ViewData["Title"] = "Your list of contacts";
+    ViewBag.ContactsInfoList = Model.ContactsInformations.ToArray();
+}
+@if(ViewBag.ContactsInfoList!=null)
+{
+    <h3>Seus contatos</h3>
+    @foreach (var contactinfo in ViewBag.ContactsInfoList)
+    {
+            <h1>@contactinfo.UsernameOfIdentification</h1>
+    }
+}
+
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
