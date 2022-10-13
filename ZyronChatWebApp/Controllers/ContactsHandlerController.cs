@@ -22,6 +22,14 @@ namespace ZyronChatWebApp.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //This action has the mission of show the user alls contacts that he have 
+            //At this way, all contacts of the user are diplayed.
+            if (User.Identity.IsAuthenticated) {
+            
+                var user = this.Context.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+                var listOfContacts = this.Context.UserScheduleListOfContacts.Include("ContactsInformations").FirstOrDefault(x => x.UserId == user.Id);
+                return View(listOfContacts);
+            }
             return View();
         }
 
