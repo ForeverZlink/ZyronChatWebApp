@@ -10,7 +10,8 @@
     ViewBag.ContactsInfoList = Model.ContactsInformations.ToArray();
 }
 
-@if(ViewBag.ContactsInfoList!=null)
+
+@if(ViewBag.ContactsInfoList.Length!=0)
 {
     <h3 >Seus contatos</h3>
     <div class="list-group">
@@ -22,6 +23,15 @@
     }
 
     </div>
+}else{
+<figure class="text-center">
+      <blockquote class="blockquote">
+        <h4>Você ainda não tem nenhum contato cadastrado</h4>
+      </blockquote>
+      <figcaption class="blockquote-footer">
+        A solidão é um caminho válido, porém árduo.
+      </figcaption>
+ </figure>
 }
 
 
