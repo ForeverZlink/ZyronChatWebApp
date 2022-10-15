@@ -17,6 +17,7 @@ namespace ZyronChatWebApp.Data
 
         public DbSet<UserScheduleListOfContacts> UserScheduleListOfContacts { get; set; }
         public DbSet<ContactInformations> ContactInformations { get; set; }
+        public DbSet<ChatMessages> ChatMessages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //One to one
@@ -30,6 +31,9 @@ namespace ZyronChatWebApp.Data
                 .HasMany(x => x.ContactsInformations)
                 .WithOne(x => x.UserScheduleListOfContacts)
                 .HasForeignKey(x=>x.IdUserScheduleListOfContacts);
+
+            modelBuilder.Entity<ChatMessages>()
+                .HasKey(x=> new {x.UserReceiver,x.UserSender});
             base.OnModelCreating(modelBuilder);
 
         }

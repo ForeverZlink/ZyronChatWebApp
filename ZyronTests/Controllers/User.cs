@@ -4,6 +4,7 @@ using ZyronChatWebApp.Controllers.Account;
 using ZyronChatWebApp.Data;
 using ZyronChatWebApp.Models;
 using Moq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -41,7 +42,7 @@ namespace ZyronTests.Controllers
         public UserModelCustom UserModel = new UserModelCustom() { UserName = "carlos", Email = "carlos@gmail.com" };
         string password = "St;111jklfald";
      
-        
+
         [Fact]
         public async void LoginUser__UserExistsInDatabaseAndNotHaveAnyErrors__AllOccursAsExpected()
         {
@@ -81,7 +82,7 @@ namespace ZyronTests.Controllers
         public async void LoginUser__UsernamePassedAsArgumentIsNull__TheActionReturnAViewResult()
         {
             //Arrange
-
+           
             //Not its necessary pass data or a instance of anything, because the action will verify 
             //if username its null and will return a view result.
 
@@ -104,7 +105,7 @@ namespace ZyronTests.Controllers
             Assert.IsType<ViewResult>(resultUsernameNotAreInContext);
 
         }
-            
+
         [Fact]
         public async void LoginUser__UsernameExistsInDatabaseButThePasswordItsNull()
         {
@@ -116,7 +117,7 @@ namespace ZyronTests.Controllers
         public  async void LoginUser__PasswordNotIsCorrect()
         {
             string passwordIncorrect = "hello";
-            
+           
             mockedSigninManager.Setup(
                 x => x.PasswordSignInAsync(It.IsAny<UserModelCustom>(), It.IsAny<string>(), true, false)).ReturnsAsync(new SigninResultMock(false));
             this.controller.SignInManager = mockedSigninManager.Object;
@@ -126,6 +127,14 @@ namespace ZyronTests.Controllers
             var resultPasswordIsIncorrect = await this.controller.LoginUser(UserModel.UserName, passwordIncorrect);
 
             Assert.IsType<ViewResult>(resultPasswordIsIncorrect);
+        }
+
+        [Fact]
+        public async void LogoutUser__AllOccursAsExpected()
+        {
+            
+            var result = this.controller.LogoutUser();
+            Assert.NotNull(result);
         }
 
         [Fact]
@@ -165,15 +174,15 @@ namespace ZyronTests.Controllers
 
             var ResultUserCantBeRegistered = await controller.RegisterUser(UserModel.UserName, password, UserModel.Email);
             Assert.NotNull(ResultUserCantBeRegistered);
-           
+
             //Verify type of return 
             var ResultUserCantBeRegisteredTyped= Assert.IsType<ViewResult>(ResultUserCantBeRegistered);
 
-
+     
             //Verify ViewBag field 
             Assert.False(controller.ViewBag.UserCreatedWithSucess); 
         }
-
+        
     }
 
     public class SigninResultMock : SignInResult
@@ -183,7 +192,7 @@ namespace ZyronTests.Controllers
             this.Succeeded=succeeded;
         }
     }
-    
+
     //Class to change Succeeded property of IdentityResult. Very useful to mock values.
     public class IdentityResultMock : IdentityResult
     {
