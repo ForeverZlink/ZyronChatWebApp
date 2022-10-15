@@ -33,7 +33,8 @@ namespace ZyronChatWebApp.Data
                 .HasForeignKey(x=>x.IdUserScheduleListOfContacts);
 
             modelBuilder.Entity<ChatMessages>()
-                .HasKey(x=> new {x.UserReceiver,x.UserSender});
+                .HasKey(x=> new {x.IdUserSender, x.IdUserReceiver});
+
             base.OnModelCreating(modelBuilder);
 
         }
