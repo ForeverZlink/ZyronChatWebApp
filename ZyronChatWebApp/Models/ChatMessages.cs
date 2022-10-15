@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNet.SignalR.Messaging;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace ZyronChatWebApp.Models
@@ -8,11 +9,13 @@ namespace ZyronChatWebApp.Models
         [Key]
         public int Id { get; set; }
 
-        public int IdUserSender { get; set; }
+        public string IdUserSender { get; set; }
         public UserModelCustom UserSender { get; set; }
 
-        public int IdUserReceiver { get; set; }
+        public string IdUserReceiver { get; set; }
         public UserModelCustom UserReceiver { get; set; }
+
+        public ICollection<Messages> MessagesList { get; set; }
 
             
     }
