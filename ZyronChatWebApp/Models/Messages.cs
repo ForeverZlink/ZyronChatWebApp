@@ -4,7 +4,7 @@ using ZyronChatWebApp.Models;
 
 namespace ZyronChatWebApp.Models
 {
-    public class Messages:IdentityUser
+    public class Messages
     {
         [Key]
         public int Id { get; set; }
