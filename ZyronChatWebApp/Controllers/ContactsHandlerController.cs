@@ -54,7 +54,12 @@ namespace ZyronChatWebApp.Controllers
                 //Not its possible exists two UserScheduleListOfContacts with the same UserId
                 var UserScheduleListOfContactsInstance = this.Context.UserScheduleListOfContacts.FirstOrDefault(x => x.UserId == user.Id);
 
-                var ContactInfo = new ContactInformations() { UsernameOfIdentification = NameOfContact, Surname = Surname,IdUserScheduleListOfContacts= UserScheduleListOfContactsInstance.Id};
+
+                    var ChatMessageInstance = new ChatMessages() { IdUserSender=user.Id,IdUserReceiver=userToAdd.Id };
+                    this.Context.Add(ChatMessageInstance);
+                    this.Context.SaveChanges();
+                    
+                    var ContactInfo = new ContactInformations() { UsernameOfIdentification = NameOfContact, Surname = Surname, IdUserScheduleListOfContacts = UserScheduleListOfContactsInstance.Id };
                 
                 this.Context.Add(ContactInfo);
                 this.Context.SaveChanges();
