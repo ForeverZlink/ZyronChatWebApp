@@ -40,8 +40,9 @@ namespace ZyronChatWebApp.Controllers
             {
             var username = User.FindFirstValue(ClaimTypes.Name);
             var user = this.Context.Users.FirstOrDefault(x => x.UserName == username);
+                var userToAdd = this.Context.Users.FirstOrDefault(x => x.UserName == NameOfContact);
            
-            if (user == null)
+                if (user == null || userToAdd==null)
             {
                 return NotFound();
             }
