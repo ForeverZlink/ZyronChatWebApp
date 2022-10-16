@@ -36,6 +36,8 @@ namespace ZyronChatWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> NewContact(string NameOfContact, string Surname)
         {
+            if (User.Identity.IsAuthenticated)
+            {
             var username = User.FindFirstValue(ClaimTypes.Name);
             var user = this.Context.Users.FirstOrDefault(x => x.UserName == username);
            
@@ -60,6 +62,9 @@ namespace ZyronChatWebApp.Controllers
                 return RedirectToAction("Index","DashManagement");
             }
             
+
+            }
+            return View();
 
 
 
