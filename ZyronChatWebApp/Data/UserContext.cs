@@ -25,7 +25,7 @@ namespace ZyronChatWebApp.Data
                 .HasOne<UserScheduleListOfContacts>(s => s.UserScheduleListOfContacts)
                 .WithOne(ad => ad.User)
                 .HasForeignKey<UserScheduleListOfContacts>(ad => ad.UserId);
-            
+
 
             //One to many
             modelBuilder.Entity<UserScheduleListOfContacts>()
@@ -33,7 +33,7 @@ namespace ZyronChatWebApp.Data
                 .WithOne(x => x.UserScheduleListOfContacts)
                 .HasForeignKey(x=>x.IdUserScheduleListOfContacts);
 
-            modelBuilder.Entity<ChatMessages>()
+
             modelBuilder.Entity<ChatMessages>(
 
                 entity =>
@@ -44,6 +44,17 @@ namespace ZyronChatWebApp.Data
                     entity.HasOne(x => x.UserSender).WithMany(x => x.UsersSender)
                         .HasForeignKey(x=>x.IdUserSender).OnDelete(DeleteBehavior.NoAction);
                 });
+
+
+            modelBuilder.Entity<Messages>(
+
+                entity =>
+                {
+
+                    entity.HasOne(x => x.ChatMessages).WithMany(x => x.MessagesList).HasForeignKey(x=>x.ChatMessagesId);
+                    
+                });
+
 
             base.OnModelCreating(modelBuilder);
 
