@@ -12,17 +12,28 @@ namespace ZyronChatWebApp.Controllers
         
         public UserContext Context { get; set; }
 
-        public SignInManager<UserModelCustom> SignInManager { get; set; }
-        public UserManager<UserModelCustom> UserManager { get; set; }
-        public ChatMessagesController(ILogger<ChatMessagesController> logger, UserContext dbContext,
-            SignInManager<UserModelCustom> SignInManages, UserManager<UserModelCustom> usermanager)
-        {
-            _logger = logger;
-            this.Context = dbContext;
-            this.UserManager = usermanager;
-            this.SignInManager = SignInManages; 
+        
+        
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public async Task<IActionResult> CreateNewChat(string IdUserToReceiveMessages)
+        {
+            if (IdUserToReceiveMessages != null)
+            {
+                var UserLogged = this.Context.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+                if (UserLogged != null)
+                {
+                    var chat = new ChatMessages() { IdUserSender = UserLogged.Id, IdUserReceiver = IdUserToReceiveMessages };
+                    this.Context.Add(chat);
+                    await this.Context.SaveChangesAsync();
+
+                }
             
+        }
+            return NotFound();
         }
 
         public IActionResult Index()
