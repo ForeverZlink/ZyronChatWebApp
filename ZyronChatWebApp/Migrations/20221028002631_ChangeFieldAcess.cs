@@ -2,9 +2,9 @@
 
 #nullable disable
 
-namespace ZyronChat.Data.Migrations
+namespace ZyronChatWebApp.Migrations
 {
-    public partial class AddForeingKeysAtributesInTheModel : Migration
+    public partial class ChangeFieldAcess : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

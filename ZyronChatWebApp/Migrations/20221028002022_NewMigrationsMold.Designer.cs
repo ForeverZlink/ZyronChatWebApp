@@ -9,11 +9,11 @@ using ZyronChatWebApp.Data;
 
 #nullable disable
 
-namespace ZyronChat.Data.Migrations
+namespace ZyronChatWebApp.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20221011023711_FieldNowItsRequired")]
-    partial class FieldNowItsRequired
+    [Migration("20221028002022_NewMigrationsMold")]
+    partial class NewMigrationsMold
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -157,6 +157,28 @@ namespace ZyronChat.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ZyronChatWebApp.Models.ChatMessages", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("IdUserReceiver")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("IdUserSender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdUserReceiver");
+
+                    b.HasIndex("IdUserSender");
+
+                    b.ToTable("ChatMessages");
+                });
+
             modelBuilder.Entity("ZyronChatWebApp.Models.ContactInformations", b =>
                 {
                     b.Property<int>("Id")
@@ -181,6 +203,36 @@ namespace ZyronChat.Data.Migrations
                     b.HasIndex("IdUserScheduleListOfContacts");
 
                     b.ToTable("ContactInformations");
+                });
+
+            modelBuilder.Entity("ZyronChatWebApp.Models.Messages", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ChatMessagesId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateSended")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan>("TimeSended")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatMessagesId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("ZyronChatWebApp.Models.UserModelCustom", b =>
@@ -319,6 +371,25 @@ namespace ZyronChat.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ZyronChatWebApp.Models.ChatMessages", b =>
+                {
+                    b.HasOne("ZyronChatWebApp.Models.UserModelCustom", "UserReceiver")
+                        .WithMany("UserReceiver")
+                        .HasForeignKey("IdUserReceiver")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ZyronChatWebApp.Models.UserModelCustom", "UserSender")
+                        .WithMany("UsersSender")
+                        .HasForeignKey("IdUserSender")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("UserReceiver");
+
+                    b.Navigation("UserSender");
+                });
+
             modelBuilder.Entity("ZyronChatWebApp.Models.ContactInformations", b =>
                 {
                     b.HasOne("ZyronChatWebApp.Models.UserScheduleListOfContacts", "UserScheduleListOfContacts")
@@ -328,6 +399,17 @@ namespace ZyronChat.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("UserScheduleListOfContacts");
+                });
+
+            modelBuilder.Entity("ZyronChatWebApp.Models.Messages", b =>
+                {
+                    b.HasOne("ZyronChatWebApp.Models.ChatMessages", "ChatMessages")
+                        .WithMany("MessagesList")
+                        .HasForeignKey("ChatMessagesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChatMessages");
                 });
 
             modelBuilder.Entity("ZyronChatWebApp.Models.UserScheduleListOfContacts", b =>
@@ -341,10 +423,19 @@ namespace ZyronChat.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ZyronChatWebApp.Models.ChatMessages", b =>
+                {
+                    b.Navigation("MessagesList");
+                });
+
             modelBuilder.Entity("ZyronChatWebApp.Models.UserModelCustom", b =>
                 {
+                    b.Navigation("UserReceiver");
+
                     b.Navigation("UserScheduleListOfContacts")
                         .IsRequired();
+
+                    b.Navigation("UsersSender");
                 });
 
             modelBuilder.Entity("ZyronChatWebApp.Models.UserScheduleListOfContacts", b =>
