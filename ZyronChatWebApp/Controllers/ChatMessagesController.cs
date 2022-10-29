@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using ZyronChatWebApp.Data;
 using ZyronChatWebApp.Models;
 
 namespace ZyronChatWebApp.Controllers
 {
     public class ChatMessagesController : Controller
     {
-        private readonly ILogger<ChatMessagesController> _logger;
+        
         public UserContext Context { get; set; }
 
         public SignInManager<UserModelCustom> SignInManager { get; set; }
