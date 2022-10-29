@@ -43,6 +43,7 @@ namespace ZyronChatWebApp.Data
                         .HasForeignKey(x=>x.IdUserReceiver).OnDelete(DeleteBehavior.NoAction);
                     entity.HasOne(x => x.UserSender).WithMany(x => x.UsersSender)
                         .HasForeignKey(x=>x.IdUserSender).OnDelete(DeleteBehavior.NoAction);
+                    entity.HasKey(x => x.Id);
                 });
 
 
