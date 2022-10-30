@@ -56,10 +56,6 @@ namespace ZyronChatWebApp.Controllers
                 var UserScheduleListOfContactsInstance = this.Context.UserScheduleListOfContacts.FirstOrDefault(x => x.UserId == user.Id);
 
 
-                    var ChatMessageInstance = new ChatMessages() { IdUserSender=user.Id,IdUserReceiver=userToAdd.Id };
-                    this.Context.Add(ChatMessageInstance);
-                    this.Context.SaveChanges();
-                    
                     var ContactInfo = new ContactInformations() { UsernameOfIdentification = NameOfContact, Surname = Surname, IdUserScheduleListOfContacts = UserScheduleListOfContactsInstance.Id };
                 
                 this.Context.Add(ContactInfo);
