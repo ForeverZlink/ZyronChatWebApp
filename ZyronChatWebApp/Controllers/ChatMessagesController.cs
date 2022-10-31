@@ -37,16 +37,16 @@ namespace ZyronChatWebApp.Controllers
                     //So the user who is now adding is the first to open the connection and the program will not need
                     //to create a new object for that.
                     if (chatmessages==null) {
-                    var chat = new ChatMessages() { IdUserSender = UserLogged.Id, IdUserReceiver = IdUserToReceiveMessages };
-                    this.Context.Add(chat);
-                    await this.Context.SaveChangesAsync();
+                        var chat = new ChatMessages() { IdUserSender = UserLogged.Id, IdUserReceiver = IdUserToReceiveMessages };
+                        this.Context.Add(chat);
+                        await this.Context.SaveChangesAsync();
 
-                }
+                    }
 
                     return Ok();
-                
-            }
-            return NotFound();
+
+                }
+                return NotFound();
                 
             }
             return NotFound();

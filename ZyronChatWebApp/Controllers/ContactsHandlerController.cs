@@ -17,7 +17,7 @@ namespace ZyronChatWebApp.Controllers
         public ContactsHandlerController(UserContext dbContext)
         {
             this.Context = dbContext;
-
+            
         }
 
 
@@ -39,39 +39,46 @@ namespace ZyronChatWebApp.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-            var username = User.FindFirstValue(ClaimTypes.Name);
-            var user = this.Context.Users.FirstOrDefault(x => x.UserName == username);
+                var username = User.FindFirstValue(ClaimTypes.Name);
+                var user = this.Context.Users.FirstOrDefault(x => x.UserName == username);
                 var userToAdd = this.Context.Users.FirstOrDefault(x => x.UserName == NameOfContact);
-           
+                
                 if (user == null || userToAdd==null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                //Seach in database the object create when the user was created in the first time. 
-                //Here its possible find because when the user was created a new UserScheduleListOfContacts object receive a UserId
-                //This Userid its the prove of relationship among both entitys
-                //Not its possible exists two UserScheduleListOfContacts with the same UserId
-                var UserScheduleListOfContactsInstance = this.Context.UserScheduleListOfContacts.FirstOrDefault(x => x.UserId == user.Id);
+                {
+                    return NotFound();
+                }
+                else
+                {
+
+                    //Seach in database the object create when the user was created in the first time. 
+                    //Here its possible find because when the user was created a new UserScheduleListOfContacts object receive a UserId
+                    //This Userid its the prove of relationship among both entitys
+                    //Not its possible exists two UserScheduleListOfContacts with the same UserId
+                    var UserScheduleListOfContactsInstance = this.Context.UserScheduleListOfContacts.FirstOrDefault(x => x.UserId == user.Id);
 
 
                     var ContactInfo = new ContactInformations() { UsernameOfIdentification = NameOfContact, Surname = Surname, IdUserScheduleListOfContacts = UserScheduleListOfContactsInstance.Id };
-                
-                this.Context.Add(ContactInfo);
-                this.Context.SaveChanges();
 
-                
-                return RedirectToAction("Index","DashManagement");
+                    this.Context.Add(ContactInfo);
+                    this.Context.SaveChanges();
+
+                    
+                    //Create a new identification 
+                    this.ChatMessagesController.Context = this.Context;
+                    await this.ChatMessagesController.CreateNewChat(userToAdd.Id);
+                    }
+                    
+
+                    return RedirectToAction("Index","DashManagement");
             }
-            
-
-            }
-            return View();
-
-
+            return NotFound();
 
 
         }
+            
+
+
+
+
     }
 }
