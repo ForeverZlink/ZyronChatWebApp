@@ -18,6 +18,8 @@ namespace ZyronChatWebApp.Data
         public DbSet<UserScheduleListOfContacts> UserScheduleListOfContacts { get; set; }
         public DbSet<ContactInformations> ContactInformations { get; set; }
         public DbSet<ChatMessages> ChatMessages { get; set; }
+
+        public DbSet<Messages> Messages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //One to one
