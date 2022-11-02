@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using ZyronChatWebApp.Controllers;
+using ZyronChatWebApp.Data;
 
 namespace ZyronChatWebApp.SignalR.Hubs
 {
