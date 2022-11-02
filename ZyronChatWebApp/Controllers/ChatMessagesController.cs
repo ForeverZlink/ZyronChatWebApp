@@ -18,16 +18,43 @@ namespace ZyronChatWebApp.Controllers
         {
             this.Context = dbcontext;
         }
-        
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         public IActionResult Index()
         {
             return View();
         }
+        public async Task<IActionResult> ChatMenu(string IdUserToTalk)
+        {
+            //This action is to take all messages among
+            //two users and return to a view. 
+            //In this view, will be the chat, with all
+            //history of messages of the users.
+
+
+            var UserCaller = this.Context.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+            if (UserCaller != null)
+            {
+                var chatmessages = this.Context.ChatMessages.Where(
+                        x => x.IdUserReceiver == UserCaller.Id && x.IdUserSender == IdUserToTalk ||
+                            x.IdUserSender == UserCaller.Id && x.IdUserReceiver == IdUserToTalk
+                        ).Include(x=>x.MessagesList).FirstOrDefault();
+                if (chatmessages != null)
+                {
+                    var MessagesOfUserCaller = chatmessages.MessagesList.Where(x => x.Sender == UserCaller.Id)
+                        .OrderBy(x=>x.DateSended).OrderBy(x=>x.TimeSended).ToArray();
+                    var MessagesOfAnotherUserToTalk = chatmessages.MessagesList.Where(x => x.Sender == IdUserToTalk)
+                        .OrderBy(x => x.DateSended).OrderBy(x => x.TimeSended).ToArray();
+
+                    ViewBag.MessagesOfUser = MessagesOfUserCaller;
+                    ViewBag.MessagesOfUserToTalk = MessagesOfAnotherUserToTalk;
+                    return View();
+                }
+                return View();
+            }
+
+            return View();
+        }
+        
         public async Task<IActionResult> CreateNewChat(string IdUserToReceiveMessages)
         {
             if (IdUserToReceiveMessages != null)
