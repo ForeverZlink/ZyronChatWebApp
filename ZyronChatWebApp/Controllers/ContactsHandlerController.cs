@@ -56,8 +56,18 @@ namespace ZyronChatWebApp.Controllers
                     //Not its possible exists two UserScheduleListOfContacts with the same UserId
                     var UserScheduleListOfContactsInstance = this.Context.UserScheduleListOfContacts.FirstOrDefault(x => x.UserId == user.Id);
 
+                    var ContactInformation = this.Context.ContactInformations.FirstOrDefault(
+                        x => x.IdUserScheduleListOfContacts == UserScheduleListOfContactsInstance.Id
+                        && x.UsernameOfIdentification == NameOfContact);
 
-                    var ContactInfo = new ContactInformations() { UsernameOfIdentification = NameOfContact, Surname = Surname, IdUserScheduleListOfContacts = UserScheduleListOfContactsInstance.Id };
+                    if (ContactInformation == null)
+                    {
+                        var ContactInfo = new ContactInformations()
+                        {
+                            UsernameOfIdentification = NameOfContact,
+                            Surname = Surname,
+                            IdUserScheduleListOfContacts = UserScheduleListOfContactsInstance.Id
+                        };
 
                     this.Context.Add(ContactInfo);
                     this.Context.SaveChanges();
@@ -65,7 +75,20 @@ namespace ZyronChatWebApp.Controllers
                     
                     //Create a new identification 
                     this.ChatMessagesController.Context = this.Context;
+
+                        //how the user not call the ChatMessagesController direct, its necessary set the ControllerContext field
+                        //because, no one controller receive a ControllerContext object without being called direct.
+                        //Because ControllerContext its set when its called per the user. 
+
+                        //ChatMessagesController needs of ControllerContext for acess values of current user logged.
+
+                        this.ChatMessagesController.ControllerContext = this.ControllerContext;
                     await this.ChatMessagesController.CreateNewChat(userToAdd.Id);
+
+                    }
+                    else
+                    {
+                        ViewBag.ContactAlreadyExists = true;
                     }
                     
 
