@@ -19,6 +19,10 @@ namespace ZyronChatWebApp.Controllers
             this.Context = dbcontext;
         }
         
+        public IActionResult Index()
+        {
+            return View();
+        }
 
         public IActionResult Index()
         {
