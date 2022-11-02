@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Security.Claims;
 using ZyronChatWebApp.Data;
 using ZyronChatWebApp.Models;
 
@@ -13,6 +14,10 @@ namespace ZyronChatWebApp.Controllers
         public UserContext Context { get; set; }
 
         
+        public ChatMessagesController(UserContext dbcontext)
+        {
+            this.Context = dbcontext;
+        }
         
 
         public IActionResult Index()
