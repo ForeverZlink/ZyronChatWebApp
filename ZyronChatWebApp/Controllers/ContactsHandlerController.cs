@@ -69,12 +69,11 @@ namespace ZyronChatWebApp.Controllers
                             IdUserScheduleListOfContacts = UserScheduleListOfContactsInstance.Id
                         };
 
-                    this.Context.Add(ContactInfo);
-                    this.Context.SaveChanges();
+                        this.Context.Add(ContactInfo);
+                        this.Context.SaveChanges();
 
-                    
-                    //Create a new identification 
-                    this.ChatMessagesController.Context = this.Context;
+                        //Create a new identification 
+                        this.ChatMessagesController.Context = this.Context;
 
                         //how the user not call the ChatMessagesController direct, its necessary set the ControllerContext field
                         //because, no one controller receive a ControllerContext object without being called direct.
@@ -83,16 +82,18 @@ namespace ZyronChatWebApp.Controllers
                         //ChatMessagesController needs of ControllerContext for acess values of current user logged.
 
                         this.ChatMessagesController.ControllerContext = this.ControllerContext;
-                    await this.ChatMessagesController.CreateNewChat(userToAdd.Id);
+                        await this.ChatMessagesController.CreateNewChat(userToAdd.Id);
 
                     }
                     else
                     {
                         ViewBag.ContactAlreadyExists = true;
                     }
-                    
 
-                    return RedirectToAction("Index","DashManagement");
+                    return RedirectToAction("Index", "DashManagement");
+                }
+                    
+                
             }
             return NotFound();
 
