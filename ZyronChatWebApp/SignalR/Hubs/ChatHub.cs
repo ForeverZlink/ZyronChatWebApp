@@ -8,11 +8,17 @@ using ZyronChatWebApp.Models;
 
 namespace ZyronChatWebApp.SignalR.Hubs
 {
-    public class ChatHub:Hub
+    public class ChatHub : Hub
     {
-        public  Task SendMessagePrivate(string user, string message)
+        public ChatMessagesLogic ChatMessageLogic {get;set;}
+        
+        public ChatHub(UserContext dbcontext)
         {
-            //Send a private message for a other user. 1x1 chat
+
+            this.ChatMessageLogic = new ChatMessagesLogic(dbcontext);
+
+            
+        }
             
             return  this.Clients.User(user).SendAsync("ReceiveMessagePrivate", message);
            
