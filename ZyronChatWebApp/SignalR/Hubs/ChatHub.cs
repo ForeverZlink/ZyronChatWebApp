@@ -19,8 +19,16 @@ namespace ZyronChatWebApp.SignalR.Hubs
 
             
         }
+        public async  Task SendMessagePrivate(string userToSendUsername, string message)
+        {
+            string userWhoSend = this.Context.User.Identity.Name;
             
-            return  this.Clients.User(user).SendAsync("ReceiveMessagePrivate", message);
+            this.ChatMessageLogic.SaveMessagesChatBetweenTwoUsers(userWhoSend, userToSendUsername, message);
+            var idUserToSend = this.ChatMessageLogic.SearchUserIdWithUsername(userToSendUsername); 
+            
+            //Send a private message for a other user. 1x1 chat. To work, its necessary pass the Id field of User, username not working,
+            //just the id
+            await this.Clients.User(idUserToSend).SendAsync("ReceiveMessagePrivate", message);
            
         }
         public Task SendMessageToAll(string user, string message)
