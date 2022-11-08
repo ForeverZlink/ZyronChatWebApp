@@ -29,6 +29,7 @@
 
     @foreach (var contactinfo in ViewBag.ContactsInfoList)
     {
+        <a href="@Url.ActionLink("ChatMenu","ChatMessages", new{UserToTalkUsername=contactinfo.UsernameOfIdentification})">@contactinfo.UsernameOfIdentification</a>
             
                 <button type="button" class="list-group-item list-group-item-action list-group-item-dark"><h4>  @contactinfo.UsernameOfIdentification</h4></button>
     }
