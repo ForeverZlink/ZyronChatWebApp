@@ -22,7 +22,7 @@ namespace ZyronChatWebApp.SignalR.Hubs
         public async  Task SendMessagePrivate(string userToSendUsername, string message)
         {
             string userWhoSend = this.Context.User.Identity.Name;
-            
+
             this.ChatMessageLogic.SaveMessagesChatBetweenTwoUsers(userWhoSend, userToSendUsername, message);
             var idUserToSend = this.ChatMessageLogic.SearchUserIdWithUsername(userToSendUsername); 
             
@@ -31,10 +31,10 @@ namespace ZyronChatWebApp.SignalR.Hubs
             await this.Clients.User(idUserToSend).SendAsync("ReceiveMessagePrivate", message);
            
         }
-        public Task SendMessageToAll(string user, string message)
+        public async Task SendMessageToAll(string user, string message)
         {
             
-            return this.Clients.All.SendAsync("ReceiveMessage", user, message);
+            await this.Clients.All.SendAsync("ReceiveMessage", user, message);
         }
     }
 }
