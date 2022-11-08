@@ -10,7 +10,12 @@
     ViewBag.ContactsInfoList = Model.ContactsInformations.ToArray();
 }
 
+@if(ViewBag.ContactAddedWithSucess==true){
 
+    <div class="alert alert-dark" role="alert">
+      Novo contato adicionado com sucesso.
+    </div>
+}
 @if(ViewBag.ContactsInfoList.Length!=0)
 {
     <h3 >Seus contatos</h3>
