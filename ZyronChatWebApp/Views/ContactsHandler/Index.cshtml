@@ -16,6 +16,12 @@
       Novo contato adicionado com sucesso.
     </div>
 }
+@if (ViewBag.ContactAlreadyExists==true)
+{
+     <div class="alert alert-dark" role="alert">
+          Não foi possível adicionar esse contato porque ele já está cadastrado.
+     </div>
+}
 @if(ViewBag.ContactsInfoList.Length!=0)
 {
     <h3 >Seus contatos</h3>
