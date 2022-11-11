@@ -14,7 +14,7 @@ namespace ZyronChatWebApp.Controllers
         
         public UserContext Context { get; set; }
         public ChatMessagesLogic ChatMessagesLogic { get; set; }
-
+        
         public ILogger<ChatMessagesController> logger { get; set; }
         public ChatMessagesController(UserContext dbcontext, ILogger<ChatMessagesController> logger)
         {
@@ -27,36 +27,52 @@ namespace ZyronChatWebApp.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> ChatMenu(string IdUserToTalk)
+        public async Task<IActionResult> ChatMenu(string UserToTalkUsername)
         {
             //This action is to take all messages among
             //two users and return to a view. 
             //In this view, will be the chat, with all
             //history of messages of the users.
-
-
-            var UserCaller = this.Context.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
-            if (UserCaller != null)
+            this.logger.LogInformation("Start ChatMenu view");
+            if (UserToTalkUsername == null)
             {
-                var chatmessages = this.Context.ChatMessages.Where(
-                        x => x.IdUserReceiver == UserCaller.Id && x.IdUserSender == IdUserToTalk ||
-                            x.IdUserSender == UserCaller.Id && x.IdUserReceiver == IdUserToTalk
-                        ).Include(x=>x.MessagesList).FirstOrDefault();
-                if (chatmessages != null)
-                {
-                    var MessagesOfUserCaller = chatmessages.MessagesList.Where(x => x.Sender == UserCaller.Id)
-                        .OrderBy(x=>x.DateSended).OrderBy(x=>x.TimeSended).ToArray();
-                    var MessagesOfAnotherUserToTalk = chatmessages.MessagesList.Where(x => x.Sender == IdUserToTalk)
-                        .OrderBy(x => x.DateSended).OrderBy(x => x.TimeSended).ToArray();
-
-                    ViewBag.MessagesOfUser = MessagesOfUserCaller;
-                    ViewBag.MessagesOfUserToTalk = MessagesOfAnotherUserToTalk;
-                    return View();
-                }
-                return View();
+                this.logger.LogError("UserToTalkUsername its null");
+                return NotFound();
             }
 
-            return View();
+            this.logger.LogInformation("Getting username of user caller of method");
+            var UsernameUserCaller = this.User.Identity.Name;
+
+            if (UsernameUserCaller != null)
+            {
+                this.logger.LogCritical("Getting messages");
+                var messages = this.ChatMessagesLogic.GetMessagesOfAmongTwoUsers(UsernameUserCaller, UserToTalkUsername);
+                this.logger.LogInformation("End of search messages");
+
+                this.logger.LogInformation("Verifying messages");
+                if (messages == null) {
+                    this.logger.LogError("Could not find any message ");
+                    return null;
+
+                }
+                this.logger.LogInformation("Starting to setting ViewBag propertys");
+
+                this.logger.LogInformation("Setting First Viewbag property ");
+                this.ViewBag.UserToSend = UserToTalkUsername;
+
+                this.logger.LogInformation("Setting Second ViewBag propertys");
+                this.ViewBag.AllMessages = messages;
+
+                this.logger.LogInformation("Returning the view");
+                return View();
+
+
+            }
+            this.logger.LogError("Not was possible get de username of user");
+            return NotFound();
+            
+
+            
         }
         
         public async Task<IActionResult> CreateNewChat(string IdUserToReceiveMessages)
@@ -92,43 +108,6 @@ namespace ZyronChatWebApp.Controllers
             }
             return NotFound();
         }
-        public bool SaveMessagesChatBetweenTwoUsers(string UserToSendAMessageIdentification,string message)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                
-                string usernameActualUser = User.Identity.Name;
-                var user = this.Context.Users.FirstOrDefault(x => x.UserName == usernameActualUser );
-                var userToSend = this.Context.Users.FirstOrDefault(x => x.UserName == UserToSendAMessageIdentification);
-                if (userToSend != null || user!=null)
-                {
-                    SearchChat:
-                        var Chat = this.Context.ChatMessages.FirstOrDefault(
-                            x => x.IdUserReceiver == user.Id && x.IdUserSender == userToSend.Id ||
-                                x.IdUserSender == user.Id && x.IdUserReceiver == userToSend.Id
-                            );
-                    
-                        if (Chat != null)
-                        {
-                            DateTime DatetimeTodaySended = DateTime.UtcNow.Date;
-                            TimeSpan TimeMessageSended = DateTime.UtcNow.TimeOfDay;
-                            var MessageSaved = new Messages() {Sender=user.UserName ,Message = message, TimeSended = TimeMessageSended, DateSended = DatetimeTodaySended };
-                        
-                            Chat.MessagesList.Add(MessageSaved);
-                            this.Context.Update(Chat);
-                            this.Context.SaveChanges();
-
-
-                            return true;
-                        }
-                        else
-                        {
-                            this.CreateNewChat(userToSend.Id);
-                            goto SearchChat;
-                        }
-                }
-            }
-            return false;
-        }
+        
     }
 }
