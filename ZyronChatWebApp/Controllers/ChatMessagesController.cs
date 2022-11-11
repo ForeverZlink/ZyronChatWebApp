@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Security.Claims;
 using ZyronChatWebApp.Data;
+using ZyronChatWebApp.Logics;
 using ZyronChatWebApp.Models;
 
 namespace ZyronChatWebApp.Controllers
