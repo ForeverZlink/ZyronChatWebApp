@@ -13,11 +13,13 @@ namespace ZyronChatWebApp.Controllers
     {
         
         public UserContext Context { get; set; }
+        public ChatMessagesLogic ChatMessagesLogic { get; set; }
 
         
         public ChatMessagesController(UserContext dbcontext)
         {
             this.Context = dbcontext;
+            this.ChatMessagesLogic = new ChatMessagesLogic(dbcontext);
         }
 
         public IActionResult Index()
