@@ -72,6 +72,7 @@ namespace ZyronChatWebApp.Controllers
                         this.Context.Add(ContactInfo);
                         this.Context.SaveChanges();
 
+                        ViewBag.ContactAddedWithSucess = true;
                         //Create a new identification 
                         this.ChatMessagesController.Context = this.Context;
 
