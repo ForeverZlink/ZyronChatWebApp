@@ -66,7 +66,7 @@ namespace ZyronChatWebApp.Logics
 
         }
 
-        public Messages[]  AllMessagesRelatedOfUsers(string usernameUserCaller, string UserToTalkUsername)
+        public Messages[]  GetMessagesOfAmongTwoUsers(string usernameUserCaller, string UserToTalkUsername)
         {
             //This action is to take all messages among
             //two users and return to a view. 
