@@ -43,6 +43,7 @@ namespace ZyronChatWebApp.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                
                 var username = User.FindFirstValue(ClaimTypes.Name);
                 var user = this.Context.Users.FirstOrDefault(x => x.UserName == username);
                 var userToAdd = this.Context.Users.FirstOrDefault(x => x.UserName == NameOfContact);
@@ -53,49 +54,23 @@ namespace ZyronChatWebApp.Controllers
                 }
                 else
                 {
+                    var Sucess =this.UserListOfContactsLogic.AddNewContact(user.Id, NameOfContact, Surname);
+                    if (Sucess == false) {
+                        return NotFound();
+                    }
 
-                    //Seach in database the object create when the user was created in the first time. 
-                    //Here its possible find because when the user was created a new UserScheduleListOfContacts object receive a UserId
-                    //This Userid its the prove of relationship among both entitys
-                    //Not its possible exists two UserScheduleListOfContacts with the same UserId
-                    var UserScheduleListOfContactsInstance = this.Context.UserScheduleListOfContacts.FirstOrDefault(x => x.UserId == user.Id);
-
-                    var ContactInformation = this.Context.ContactInformations.FirstOrDefault(
-                        x => x.IdUserScheduleListOfContacts == UserScheduleListOfContactsInstance.Id
-                        && x.UsernameOfIdentification == NameOfContact);
-
-                    if (ContactInformation == null)
+                    bool ChatCreatedWithSucess= this.ChatMessagesLogic.CreateNewChat(user.Id, userToAdd.Id);
+                    if (ChatCreatedWithSucess)
                     {
-                        var ContactInfo = new ContactInformations()
-                        {
-                            UsernameOfIdentification = NameOfContact,
-                            Surname = Surname,
-                            IdUserScheduleListOfContacts = UserScheduleListOfContactsInstance.Id
-                        };
-
-                        this.Context.Add(ContactInfo);
-                        this.Context.SaveChanges();
-
                         ViewBag.ContactAddedWithSucess = true;
-                        //Create a new identification 
-                        this.ChatMessagesController.Context = this.Context;
-
-                        //how the user not call the ChatMessagesController direct, its necessary set the ControllerContext field
-                        //because, no one controller receive a ControllerContext object without being called direct.
-                        //Because ControllerContext its set when its called per the user. 
-
-                        //ChatMessagesController needs of ControllerContext for acess values of current user logged.
-
-                        this.ChatMessagesController.ControllerContext = this.ControllerContext;
-                        await this.ChatMessagesController.CreateNewChat(userToAdd.Id);
-
+                        return View();
                     }
                     else
                     {
                         ViewBag.ContactAlreadyExists = true;
                     }
 
-                    return RedirectToAction("Index", "DashManagement");
+                    
                 }
                     
                 
