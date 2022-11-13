@@ -100,7 +100,7 @@ namespace ZyronChatWebApp.Logics
            
         }
 
-        public void CreateNewChat(string UsernameOfUserSender,string IdUserToReceiveMessages)
+        public bool CreateNewChat(string UsernameOfUserSender,string IdUserToReceiveMessages)
         {
             if (IdUserToReceiveMessages != null)
             {
@@ -124,12 +124,13 @@ namespace ZyronChatWebApp.Logics
                         this.Context.Add(chat);
                          this.Context.SaveChangesAsync();
 
-                    }
+                        return true;
+                    }return false;
 
-                }
+                }return false;
               
 
-            }
+            }return false;
             
         }
     }
