@@ -102,7 +102,7 @@ namespace ZyronChatWebApp.Logics
 
         public bool CreateNewChat(string UsernameOfUserSender,string IdUserToReceiveMessages)
         {
-            if (IdUserToReceiveMessages != null)
+            if (IdUserToReceiveMessages != null && UsernameOfUserSender !=null)
             {
                 string usernameActualUser = UsernameOfUserSender;
                 var UserLogged = this.Context.Users.FirstOrDefault(x => x.UserName == usernameActualUser);
