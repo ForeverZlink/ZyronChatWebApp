@@ -42,7 +42,7 @@ namespace ZyronTests.Controllers
 
         
         static public UserContext context = new DatabaseConstructorTesting().CreateContext();
-        public ChatMessagesController controller = new ChatMessagesController( context);
+        public ChatMessagesController controller = new ChatMessagesController( context,null);
         [Fact]
         public void ChatWithASpecificUser__UsersIsAuthenticate__UserToSendandUserNotAreNull__ChatNotIsNull__AllOccursWithSucess()
         {
@@ -78,10 +78,6 @@ namespace ZyronTests.Controllers
             HttpContextDefault.User = ClaimsPrincipalInstance;
             this.controller.ControllerContext.HttpContext = HttpContextDefault;  
 
-            //start of call 
-            var result = this.controller.SaveMessagesChatBetweenTwoUsers(UserToSend.UserName, "jkla");
-
-            Assert.True(result);
             
             
         }
