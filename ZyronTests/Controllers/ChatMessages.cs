@@ -115,7 +115,7 @@ public class ClaimsPrincipalAltered : ClaimsPrincipal
 //acessors and visibility of code. 
 public class ChatMessageAlteredController : ChatMessagesController
 {
-    public ChatMessageAlteredController(ILogger<ChatMessagesController> logger, UserContext dbContext) :base(logger,dbContext,null,null)
+    public ChatMessageAlteredController(ILogger<ChatMessagesController> logger, UserContext dbContext) :base(dbContext,logger)
     {
         
     }
