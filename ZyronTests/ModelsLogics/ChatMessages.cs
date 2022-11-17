@@ -63,10 +63,18 @@ namespace ZyronTests.ModelTesting
         [Fact]
         public void Create_New_Chat_All_Ok()
         {
+            string Id = Guid.NewGuid().ToString();
+            string IdReceiver = Guid.NewGuid().ToString();
+            //Creating the Users
+            UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
+            UserModelCustom UserReceiver = new UserModelCustom() { UserName = UsernameReceiver, Email = EmailReceiver, Id = IdReceiver };
                
+            //Saving in database 
+            context.AddRange(UserSender, UserReceiver);
+            context.SaveChanges();
             
             var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(Username, IdReceiver);
-            context.Dispose();
+            
             Assert.True(ChatCreatedWithSucess);
 
            
