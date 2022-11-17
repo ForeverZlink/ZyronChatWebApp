@@ -16,13 +16,13 @@ namespace ZyronTests.ModelTesting
         //Definition of user sender
         string Username = "Carls1os";
         string Email = "carlos@gmail.com";
-
+        
 
         //Definition of user receiver
         string UsernameReceiver = "KSjkafs";
         string EmailReceiver = "Zelda@gmail.com";
-
         
+
         
         [Fact]
         public void GetMessagesOfAmongTwoUsers_All_Ok()
@@ -57,7 +57,7 @@ namespace ZyronTests.ModelTesting
             //This manner its for verify if GetMessagesOfAmongTwoUsers return the corrects messages saved among the users.
 
             Assert.Contains(Message, MessageList.FirstOrDefault().Message);
-
+            
         }
 
         [Fact]
@@ -68,15 +68,15 @@ namespace ZyronTests.ModelTesting
             //Creating the Users
             UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
             UserModelCustom UserReceiver = new UserModelCustom() { UserName = UsernameReceiver, Email = EmailReceiver, Id = IdReceiver };
-               
+
             //Saving in database 
             context.AddRange(UserSender, UserReceiver);
             context.SaveChanges();
-            
+
             var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(Username, IdReceiver);
             
             Assert.True(ChatCreatedWithSucess);
-
+            
            
             
            
@@ -99,6 +99,19 @@ namespace ZyronTests.ModelTesting
         [Fact]
         public void Create_New_Chat_Already_Exists_a_Entity_With_The_Id_of_Both_Users()
         {
+            //This verify how is the response of program when its tried 
+            //create a object of the type ChatMessages when already exist 
+            // a entity with the both users related.
+
+            string Id = Guid.NewGuid().ToString();
+            string IdReceiver = Guid.NewGuid().ToString();
+            //Creating the Users
+            UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
+            UserModelCustom UserReceiver = new UserModelCustom() { UserName = UsernameReceiver, Email = EmailReceiver, Id = IdReceiver };
+
+            //Saving in database 
+            context.AddRange(UserSender, UserReceiver);
+            context.SaveChanges();
             //Creating the register if dont exist in database 
             var SucessTrueExpected = this.chatmessages.CreateNewChat(Username, IdReceiver);
             Assert.True(SucessTrueExpected);
