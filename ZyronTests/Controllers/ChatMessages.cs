@@ -43,44 +43,10 @@ namespace ZyronTests.Controllers
         
         static public UserContext context = new DatabaseConstructorTesting().CreateContext();
         public ChatMessagesController controller = new ChatMessagesController( context,null);
-        [Fact]
-        public void ChatWithASpecificUser__UsersIsAuthenticate__UserToSendandUserNotAreNull__ChatNotIsNull__AllOccursWithSucess()
-        {
 
-            //this test need of that the user is authenticate, because of this its needed create a new instance of 
-            // the class and override the value of field.
-            string nameOfUser = "Carlos";
-            var IdentityAlteredWithIsAuthenticateTrue = new IdentityAltered() { IsAuthenticated=true,Name=nameOfUser};
 
-            var User= new UserModelCustom() { UserName=nameOfUser,Email="carlos@gmail.com" };
-            
-            var UserToSend = new UserModelCustom() { UserName="Testa",Email="Hello@gmail.com"};
-            context.Add(User);
-            context.Add(UserToSend);
-            context.SaveChanges();
-            
-
-            var chat = new ZyronChatWebApp.Models.ChatMessages() {IdUserSender=User.Id,IdUserReceiver=UserToSend.Id};
-            context.Add(chat);
-            context.SaveChanges();
-
-            this.controller.Context = context;
-
-           
-            var claim = new Claim(ClaimTypes.Name, User.UserName);
-            var identityOfUser = new ClaimsIdentity(new[] { claim }, "hello");
-            
-            // this uses basic auth
-            var ClaimsPrincipalInstance = new ClaimsPrincipal(identityOfUser);
-             
-            var HttpContextDefault =new DefaultHttpContext();
-
-            HttpContextDefault.User = ClaimsPrincipalInstance;
-            this.controller.ControllerContext.HttpContext = HttpContextDefault;  
-
-            
-            
-        }
+    
+    
 
 
 
