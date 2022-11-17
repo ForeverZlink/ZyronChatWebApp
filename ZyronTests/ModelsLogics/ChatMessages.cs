@@ -9,18 +9,18 @@ namespace ZyronTests.ModelTesting
 {
     public class ChatMessagesLogicTesting
     {
-        static public UserContext context = new DatabaseConstructorTesting().CreateContext();
+        static public DatabaseConstructorTesting fixture = new DatabaseConstructorTesting();
+        static UserContext context = fixture.CreateContext();
         public ChatMessagesLogic chatmessages = new ChatMessagesLogic(context);
 
         //Definition of user sender
         string Username = "Carls1os";
         string Email = "carlos@gmail.com";
-        string Id = "1";
+
 
         //Definition of user receiver
         string UsernameReceiver = "KSjkafs";
         string EmailReceiver = "Zelda@gmail.com";
-        string IdReceiver = "22";
 
         
         [Fact]
