@@ -106,8 +106,8 @@ namespace ZyronChatWebApp.Logics
             {
                 string usernameActualUser = UsernameOfUserSender;
                 var UserLogged = this.Context.Users.FirstOrDefault(x => x.UserName == usernameActualUser);
-
-                if (UserLogged != null)
+                var UserToSend = this.Context.Users.FirstOrDefault(x => x.Id == IdUserToReceiveMessages);
+                if (UserLogged != null && UserToSend !=null)
                 {
                     //Search if a object ChatMessages already exists among the both user
                     var chatmessages = this.Context.ChatMessages.FirstOrDefault(
@@ -122,7 +122,7 @@ namespace ZyronChatWebApp.Logics
                         string id = Guid.NewGuid().ToString();
                         var chat = new ChatMessages() { Id = id, IdUserSender = UserLogged.Id, IdUserReceiver = IdUserToReceiveMessages };
                         this.Context.Add(chat);
-                         this.Context.SaveChangesAsync();
+                         this.Context.SaveChanges();
 
                         return true;
                     }return false;
