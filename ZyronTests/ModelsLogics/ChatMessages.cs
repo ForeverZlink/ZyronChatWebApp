@@ -23,9 +23,12 @@ namespace ZyronTests.ModelTesting
         string EmailReceiver = "Zelda@gmail.com";
 
         
+        
         [Fact]
         public void GetMessagesOfAmongTwoUsers_All_Ok()
         {
+            string Id = Guid.NewGuid().ToString();
+            string IdReceiver = Guid.NewGuid().ToString();
             //Creating the Users
             UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
             UserModelCustom UserReceiver = new UserModelCustom() { UserName=UsernameReceiver,Email=EmailReceiver,Id = IdReceiver};
@@ -54,7 +57,6 @@ namespace ZyronTests.ModelTesting
             //This manner its for verify if GetMessagesOfAmongTwoUsers return the corrects messages saved among the users.
 
             Assert.Contains(Message, MessageList.FirstOrDefault().Message);
-
 
         }
 
