@@ -137,35 +137,7 @@ namespace ZyronTests.Controllers
             Assert.NotNull(result);
         }
 
-        [Fact]
-        public async void RegisterUser__UserCreatedWithSucess_NoErros()
-        {
-
-
-            //Mock config to when CreateAsync is called
-            //The type of parameter of CreateAsync must be a It.IsAny<Type Of Model Required(like UserModelCustom)> 
-            //because this manners possibility that any instance of the type choised can be passed as argument and will 
-            //work. Case the type configured of CreateAsync mock been a instance, if another instance, same of type, not will work
-
-            //the return of CreateAsync in this case musb be true in Succeeded property of IdentityResult, because of this a create a 
-            //class to handle of this. Sucessed its necessary because RegisterUser action have a logic  structure  to verify the property
-
-            var UserModel = new UserModelCustom() { UserName = "Carlosss", Email = "carlsdfdsfsos@gmail.com" };
-            string password = "St;111jklfald";
-
-            
-            mockedUserManager.Setup(x => x.CreateAsync(It.IsAny<UserModelCustom>(), It.IsAny<string>())).ReturnsAsync(new IdentityResultMock());
-            controller.UserManagement = mockedUserManager.Object;
-            var result = await controller.RegisterUser(UserModel.UserName, password, UserModel.Email);
-
-
-            //Verify if the user was created with sucess           
-            //In the controller action, when the operation of cration occurs with sucess, the action create 
-            // a view bag with true. So, this assert verify this.
-
-            var resultUserCreatedWithSucess = Assert.IsType<ViewResult>(result);
-            Assert.True( controller.ViewBag.UserCreatedWithSucess);
-        }
+       
         [Fact]
         public async void RegisterUser__UserCantBeRegistered()
         {
