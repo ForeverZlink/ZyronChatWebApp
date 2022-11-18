@@ -15,12 +15,13 @@ namespace ZyronChatWebApp.Controllers
     {
         public UserContext Context { get; set; }
         public ChatMessagesLogic ChatMessagesLogic { get; set; }
-
+        public ILogger<ContactsHandlerController> Logger { get; set; }
         public UserScheduleListOfContactsLogic UserListOfContactsLogic { get; set; }
-        public ContactsHandlerController(UserContext dbContext)
+        public ContactsHandlerController(UserContext dbContext, ILogger<ContactsHandlerController> logger)
         {
             this.Context = dbContext;
             this.ChatMessagesLogic =  new ChatMessagesLogic(dbContext);
+            this.Logger = logger;
             this.UserListOfContactsLogic = new UserScheduleListOfContactsLogic(dbContext);
         }
 
