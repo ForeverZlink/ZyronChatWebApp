@@ -33,7 +33,7 @@ namespace ZyronChatWebApp.Controllers
             this.Logger.LogInformation("Verifying if the user is logged");
             if (User.Identity.IsAuthenticated) {
                 this.Logger.LogInformation("User is logged");
-            
+
                 this.Logger.LogInformation("Getting user object ");
                 var user = this.Context.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
 
@@ -46,8 +46,8 @@ namespace ZyronChatWebApp.Controllers
                     this.Logger.LogInformation("Sucess, list of contact is valid");
 
                     this.Logger.LogInformation("Returning the view");
-                return View(listOfContacts);
-            }
+                    return View(listOfContacts);
+                }
                 
                 
             }
@@ -58,32 +58,61 @@ namespace ZyronChatWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> NewContact(string NameOfContact, string Surname)
         {
+            
+            this.Logger.LogInformation("Starting controller",DateTime.UtcNow);
+            this.Logger.LogInformation("Verifying if the user is logged", DateTime.UtcNow);
             if (User.Identity.IsAuthenticated)
             {
-                
+                this.Logger.LogInformation("User is logged", DateTime.UtcNow);
+
+                this.Logger.LogInformation("Getting user caller username", DateTime.UtcNow);
                 var username = User.FindFirstValue(ClaimTypes.Name);
+
+                this.Logger.LogInformation("Searching user caller in database ", DateTime.UtcNow);
                 var user = this.Context.Users.FirstOrDefault(x => x.UserName == username);
+
+                this.Logger.LogInformation("Searching user to send in databse ", DateTime.UtcNow);
                 var userToAdd = this.Context.Users.FirstOrDefault(x => x.UserName == NameOfContact);
-                
+
+                this.Logger.LogInformation("Verifyning if both exists", DateTime.UtcNow);
                 if (user == null || userToAdd==null)
                 {
+                    this.Logger.LogInformation("One user, or both are not registered", DateTime.UtcNow);
                     return NotFound();
                 }
                 else
                 {
+                    this.Logger.LogInformation("Both users exists");
+
+                    this.Logger.LogInformation("Trying create a new contact to relate with the user caller", DateTime.UtcNow);
                     var Sucess =this.UserListOfContactsLogic.AddNewContact(user.Id, NameOfContact, Surname);
+                    this.Logger.LogInformation("End of the process of add the contact", DateTime.UtcNow);
+
+                    this.Logger.LogInformation("Verifying if the contact was added", DateTime.UtcNow);
                     if (Sucess == false) {
+                        this.Logger.LogInformation("Contact not added with sucess", DateTime.UtcNow);
                         return NotFound();
                     }
 
+                    this.Logger.LogInformation("Creating a new Chat between if contact and the user", DateTime.UtcNow);
+
                     bool ChatCreatedWithSucess= this.ChatMessagesLogic.CreateNewChat(user.Id, userToAdd.Id);
+                    this.Logger.LogInformation("End of the operation of creating a new chat ", DateTime.UtcNow);
+
+                    this.Logger.LogInformation("Verifying if was sucess", DateTime.UtcNow);
                     if (ChatCreatedWithSucess)
                     {
+                        this.Logger.LogInformation("Operation was the sucess. Not errors found", DateTime.UtcNow);
+
+                        this.Logger.LogInformation("Setting propertys", DateTime.UtcNow);
                         ViewBag.ContactAddedWithSucess = true;
+
+                        this.Logger.LogInformation("Returning the view ", DateTime.Now);
                         return View();
                     }
                     else
                     {
+                        this.Logger.LogInformation("Error, wasnt possible create the object of the type Chat");
                         ViewBag.ContactAlreadyExists = true;
                     }
 
@@ -92,6 +121,7 @@ namespace ZyronChatWebApp.Controllers
                     
                 
             }
+            this.Logger.LogInformation("Returning not found", DateTime.UtcNow);
             return NotFound();
 
 
