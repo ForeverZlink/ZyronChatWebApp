@@ -30,12 +30,28 @@ namespace ZyronChatWebApp.Controllers
         {
             //This action has the mission of show the user alls contacts that he have 
             //At this way, all contacts of the user are diplayed.
+            this.Logger.LogInformation("Verifying if the user is logged");
             if (User.Identity.IsAuthenticated) {
+                this.Logger.LogInformation("User is logged");
             
+                this.Logger.LogInformation("Getting user object ");
                 var user = this.Context.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+
+                this.Logger.LogInformation("Getting the list of contact of the users ");
                 var listOfContacts = this.Context.UserScheduleListOfContacts.Include("ContactsInformations").FirstOrDefault(x => x.UserId == user.Id);
+
+                this.Logger.LogInformation("Verifying if the list of contact are valid");
+                if (listOfContacts != null)
+                {
+                    this.Logger.LogInformation("Sucess, list of contact is valid");
+
+                    this.Logger.LogInformation("Returning the view");
                 return View(listOfContacts);
             }
+                
+                
+            }
+            this.Logger.LogInformation("User not is authenticated ");
             return View();
         }
 
