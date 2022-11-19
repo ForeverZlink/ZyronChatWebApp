@@ -9,6 +9,9 @@ using ZyronChatWebApp.Data;
 using ZyronChatWebApp.Logics;
 using ZyronChatWebApp.Models;
 
+using Serilog;
+using Serilog.Events;
+
 namespace ZyronChatWebApp.Controllers
 {
     public class ContactsHandlerController : Controller
