@@ -3,9 +3,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog.Events;
+using Serilog;
 using ZyronChatWebApp.Data;
 using ZyronChatWebApp.Models;
 using ZyronChatWebApp.SignalR.Hubs;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +16,13 @@ builder.Services.AddSignalR();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Add context to the program 
+builder.Logging.AddSerilog(Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger());
+
 builder.Services.AddDbContext<UserContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("UserContext")
@@ -22,6 +31,8 @@ builder.Services.AddDbContext<UserContext>(
 builder.Services.AddIdentity<UserModelCustom,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<UserContext>()
     ;
+
+
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Password settings.
