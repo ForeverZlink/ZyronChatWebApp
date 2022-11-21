@@ -39,10 +39,10 @@ namespace ZyronChatWebApp.Controllers
                 Log.Information("User is logged");
 
                 Log.Information("Getting user object ");
-                var user = this.Context.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+                var IdUser = this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
                 Log.Information("Getting the list of contact of the users ");
-                var listOfContacts = this.Context.UserScheduleListOfContacts.Include("ContactsInformations").FirstOrDefault(x => x.UserId == user.Id);
+                var listOfContacts = this.Context.UserScheduleListOfContacts.Include("ContactsInformations").FirstOrDefault(x => x.UserId == IdUser);
 
                 Log.Information("Verifying if the list of contact are valid");
                 if (listOfContacts != null)
