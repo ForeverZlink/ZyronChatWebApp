@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using ZyronChatWebApp.Controllers;
 using ZyronChatWebApp.Data;
 using ZyronChatWebApp.Logics;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+
 using ZyronChatWebApp.Models;
 
 namespace ZyronChatWebApp.SignalR.Hubs
@@ -19,16 +22,15 @@ namespace ZyronChatWebApp.SignalR.Hubs
 
             
         }
-        public async  Task SendMessagePrivate(string userToSendUsername, string message)
+        public async  Task SendMessagePrivate(string IdUserToSend, string message)
         {
-            string userWhoSend = this.Context.User.Identity.Name;
+            string IdUserCaller = this.Context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
-            this.ChatMessageLogic.SaveMessagesChatBetweenTwoUsers(userWhoSend, userToSendUsername, message);
-            var idUserToSend = this.ChatMessageLogic.SearchUserIdWithUsername(userToSendUsername); 
+            this.ChatMessageLogic.SaveMessagesChatBetweenTwoUsers(IdUserCaller, IdUserToSend, message);
             
             //Send a private message for a other user. 1x1 chat. To work, its necessary pass the Id field of User, username not working,
             //just the id
-            await this.Clients.User(idUserToSend).SendAsync("ReceiveMessagePrivate", message);
+            await this.Clients.User(IdUserToSend).SendAsync("ReceiveMessagePrivate", message);
            
         }
         public async Task SendMessageToAll(string user, string message)
