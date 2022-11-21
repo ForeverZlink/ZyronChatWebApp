@@ -27,26 +27,27 @@ namespace ZyronChatWebApp.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> ChatMenu(string UserToTalkUsername)
+        public async Task<IActionResult> ChatMenu(string IdUserToTalk)
         {
             //This action is to take all messages among
             //two users and return to a view. 
             //In this view, will be the chat, with all
             //history of messages of the users.
             this.logger.LogInformation("Start ChatMenu view");
-            if (UserToTalkUsername == null)
+            if (IdUserToTalk == null)
             {
                 this.logger.LogError("UserToTalkUsername its null");
                 return NotFound();
             }
 
             this.logger.LogInformation("Getting username of user caller of method");
-            var UsernameUserCaller = this.User.Identity.Name;
+            string IdUserCaller = this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
-            if (UsernameUserCaller != null)
+
+            if (IdUserCaller != null)
             {
                 this.logger.LogCritical("Getting messages");
-                var messages = this.ChatMessagesLogic.GetMessagesOfAmongTwoUsers(UsernameUserCaller, UserToTalkUsername);
+                var messages = this.ChatMessagesLogic.GetMessagesOfAmongTwoUsers(IdUserCaller, IdUserToTalk);
                 this.logger.LogInformation("End of search messages");
 
                 this.logger.LogInformation("Verifying messages");
@@ -58,7 +59,7 @@ namespace ZyronChatWebApp.Controllers
                 this.logger.LogInformation("Starting to setting ViewBag propertys");
 
                 this.logger.LogInformation("Setting First Viewbag property ");
-                this.ViewBag.UserToSend = UserToTalkUsername;
+                this.ViewBag.UserToSend = IdUserToTalk;
 
                 this.logger.LogInformation("Setting Second ViewBag propertys");
                 this.ViewBag.AllMessages = messages;
