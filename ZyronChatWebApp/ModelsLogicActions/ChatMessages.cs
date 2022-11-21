@@ -26,12 +26,12 @@ namespace ZyronChatWebApp.Logics
                 return null;
             }
         }
-        public string SaveMessagesChatBetweenTwoUsers(string usernameActualUser, string UserToSendAMessageIdentificationUsername, string message)
+        public string SaveMessagesChatBetweenTwoUsers(string IdUserCaller, string IdUserToSend, string message)
         {
             //Save the message between two users
 
-            var user = this.Context.Users.FirstOrDefault(x => x.UserName == usernameActualUser);
-            var userToSend = this.Context.Users.FirstOrDefault(x => x.UserName == UserToSendAMessageIdentificationUsername);
+            var user = this.Context.Users.FirstOrDefault(x => x.Id == IdUserCaller);
+            var userToSend = this.Context.Users.FirstOrDefault(x => x.Id == IdUserToSend);
             if (userToSend != null && user != null)
             {
             SearchChat:
@@ -66,7 +66,7 @@ namespace ZyronChatWebApp.Logics
 
         }
 
-        public Messages[]  GetMessagesOfAmongTwoUsers(string usernameUserCaller, string UserToTalkUsername)
+        public Messages[]  GetMessagesOfAmongTwoUsers(string IdUserCaller, string IdUserTalk)
         {
             //This action is to take all messages among
             //two users and return to a view. 
@@ -74,8 +74,8 @@ namespace ZyronChatWebApp.Logics
             //history of messages of the users.
 
 
-            var UserCaller = this.Context.Users.FirstOrDefault(x => x.UserName == usernameUserCaller);
-            var UserToTalk = this.Context.Users.FirstOrDefault(x => x.UserName == UserToTalkUsername);
+            var UserCaller = this.Context.Users.FirstOrDefault(x => x.Id == IdUserCaller);
+            var UserToTalk = this.Context.Users.FirstOrDefault(x => x.Id == IdUserTalk);
             if (UserCaller != null && UserToTalk != null)
             {
                 var chatmessages = this.Context.ChatMessages.Where(
@@ -100,12 +100,12 @@ namespace ZyronChatWebApp.Logics
            
         }
 
-        public bool CreateNewChat(string UsernameOfUserSender,string IdUserToReceiveMessages)
+        public bool CreateNewChat(string IdUserSender,string IdUserToReceiveMessages)
         {
-            if (IdUserToReceiveMessages != null && UsernameOfUserSender !=null)
+            if (IdUserToReceiveMessages != null && IdUserSender !=null)
             {
-                string usernameActualUser = UsernameOfUserSender;
-                var UserLogged = this.Context.Users.FirstOrDefault(x => x.UserName == usernameActualUser);
+                
+                var UserLogged = this.Context.Users.FirstOrDefault(x => x.Id == IdUserSender);
                 var UserToSend = this.Context.Users.FirstOrDefault(x => x.Id == IdUserToReceiveMessages);
                 if (UserLogged != null && UserToSend !=null)
                 {
