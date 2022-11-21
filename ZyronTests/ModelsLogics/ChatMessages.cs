@@ -59,7 +59,34 @@ namespace ZyronTests.ModelTesting
             Assert.Contains(Message, MessageList.FirstOrDefault().Message);
             
         }
+        [Fact]
+        public void GetMessagesOfAmongTwoUsers_Both_Users_Dont_Exists_in_Database()
+        {
+            string usernameFake = "dont exist";
+            string username2Fake = "dont exist";
+            var messages = this.chatmessages.GetMessagesOfAmongTwoUsers(usernameFake,username2Fake);
+            Assert.Null(messages);
+        }
 
+        [Fact]
+        public void GetMessagesOfAmongTwoUsers_Dont_Exist_a_ChatMessage_Object_Related_With_The_Both_Users()
+        {
+            string Id = Guid.NewGuid().ToString();
+            string Username = Guid.NewGuid().ToString();
+
+            string IdReceiver = Guid.NewGuid().ToString();
+            string UsernameReceiver = Guid.NewGuid().ToString();
+            //Creating the Users
+            UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
+            UserModelCustom UserReceiver = new UserModelCustom() { UserName = UsernameReceiver, Email = EmailReceiver, Id = IdReceiver };
+
+            //Saving in database 
+            context.AddRange(UserSender, UserReceiver);
+            context.SaveChanges();
+
+            var messages = this.chatmessages.GetMessagesOfAmongTwoUsers(UserSender.Id, UserReceiver.Id);
+            Assert.Null(messages);
+        }
         [Fact]
         public void Create_New_Chat_All_Ok()
         {
