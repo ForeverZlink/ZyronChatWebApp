@@ -73,13 +73,13 @@ namespace ZyronChatWebApp.Controllers
                 var username = User.FindFirstValue(ClaimTypes.Name);
 
                 Log.Information("Searching user caller in database ", DateTime.UtcNow);
-                var user = this.Context.Users.FirstOrDefault(x => x.UserName == username);
+                var IdUser = this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
                 Log.Information("Searching user to send in databse ", DateTime.UtcNow);
-                var userToAdd = this.Context.Users.FirstOrDefault(x => x.UserName == NameOfContact);
+                var IdUserToAdd = this.Context.Users.FirstOrDefault(x => x.UserName == NameOfContact);
 
                 Log.Information("Verifyning if both exists", DateTime.UtcNow);
-                if (user == null || userToAdd==null)
+                if (IdUser == null || IdUserToAdd==null)
                 {
                     Log.Information("One user, or both are not registered", DateTime.UtcNow);
                     return NotFound();
@@ -89,7 +89,7 @@ namespace ZyronChatWebApp.Controllers
                     Log.Information("Both users exists");
 
                     Log.Information("Trying create a new contact to relate with the user caller", DateTime.UtcNow);
-                    var Sucess =this.UserListOfContactsLogic.AddNewContact(user.Id, NameOfContact, Surname);
+                    var Sucess =this.UserListOfContactsLogic.AddNewContact(IdUser, IdUserToAdd.Id, Surname);
                     Log.Information("End of the process of add the contact", DateTime.UtcNow);
 
                     Log.Information("Verifying if the contact was added", DateTime.UtcNow);
@@ -100,7 +100,7 @@ namespace ZyronChatWebApp.Controllers
 
                     Log.Information("Creating a new Chat between if contact and the user", DateTime.UtcNow);
 
-                    bool ChatCreatedWithSucess= this.ChatMessagesLogic.CreateNewChat(user.Id, userToAdd.Id);
+                    bool ChatCreatedWithSucess= this.ChatMessagesLogic.CreateNewChat(IdUser, IdUserToAdd.Id);
                     Log.Information("End of the operation of creating a new chat ", DateTime.UtcNow);
 
                     Log.Information("Verifying if was sucess", DateTime.UtcNow);
