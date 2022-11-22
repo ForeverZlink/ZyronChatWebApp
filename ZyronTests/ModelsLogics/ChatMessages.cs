@@ -13,13 +13,12 @@ namespace ZyronTests.ModelTesting
         static UserContext context = fixture.CreateContext();
         public ChatMessagesLogic chatmessages = new ChatMessagesLogic(context);
 
-        //Definition of user sender
-        string Username = "Carls1os";
+        //Definition of user 
         string Email = "carlos@gmail.com";
         
 
         //Definition of user receiver
-        string UsernameReceiver = "KSjkafs";
+        
         string EmailReceiver = "Zelda@gmail.com";
         
 
@@ -28,7 +27,10 @@ namespace ZyronTests.ModelTesting
         public void GetMessagesOfAmongTwoUsers_All_Ok()
         {
             string Id = Guid.NewGuid().ToString();
+            string Username = Guid.NewGuid().ToString();
+
             string IdReceiver = Guid.NewGuid().ToString();
+            string UsernameReceiver = Guid.NewGuid().ToString();
             //Creating the Users
             UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
             UserModelCustom UserReceiver = new UserModelCustom() { UserName=UsernameReceiver,Email=EmailReceiver,Id = IdReceiver};
@@ -38,18 +40,18 @@ namespace ZyronTests.ModelTesting
             context.SaveChanges();
 
             //Creating new Chat (object to relate users and the messages) 
-            var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(Username, IdReceiver);
+            var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(Id, IdReceiver);
 
 
             //Messages defition
             string Message = "Hello world";
 
             //Saving the messages
-            var SavedWithSucess = this.chatmessages.SaveMessagesChatBetweenTwoUsers(Username, UsernameReceiver, Message);
+            var SavedWithSucess = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver.Id, Message);
             Assert.NotNull(SavedWithSucess);
 
             //Getting the messages
-            var MessageList = this.chatmessages.GetMessagesOfAmongTwoUsers(Username, UsernameReceiver);
+            var MessageList = this.chatmessages.GetMessagesOfAmongTwoUsers(UserSender.Id,UserReceiver.Id);
             //Verify if Messagelist not is null (case be, the method has failed)
             Assert.NotNull(MessageList);
 
@@ -91,7 +93,10 @@ namespace ZyronTests.ModelTesting
         public void Create_New_Chat_All_Ok()
         {
             string Id = Guid.NewGuid().ToString();
+            string Username = Guid.NewGuid().ToString();
+
             string IdReceiver = Guid.NewGuid().ToString();
+            string UsernameReceiver = Guid.NewGuid().ToString();
             //Creating the Users
             UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
             UserModelCustom UserReceiver = new UserModelCustom() { UserName = UsernameReceiver, Email = EmailReceiver, Id = IdReceiver };
@@ -100,7 +105,7 @@ namespace ZyronTests.ModelTesting
             context.AddRange(UserSender, UserReceiver);
             context.SaveChanges();
 
-            var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(Username, IdReceiver);
+            var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(Id, IdReceiver);
             
             Assert.True(ChatCreatedWithSucess);
             
@@ -118,6 +123,10 @@ namespace ZyronTests.ModelTesting
         public void Create_New_Chat_User_Receiver_Not_Found_With_The_Id()
         {
             string IdDontExistInDatabase = "2323232332";
+            
+            string Username = Guid.NewGuid().ToString();
+
+            
             var NoSucessFalseWanted = this.chatmessages.CreateNewChat(Username, IdDontExistInDatabase);
             Assert.False(NoSucessFalseWanted);
 
@@ -129,9 +138,11 @@ namespace ZyronTests.ModelTesting
             //This verify how is the response of program when its tried 
             //create a object of the type ChatMessages when already exist 
             // a entity with the both users related.
-
             string Id = Guid.NewGuid().ToString();
+            string Username = Guid.NewGuid().ToString();
+
             string IdReceiver = Guid.NewGuid().ToString();
+            string UsernameReceiver = Guid.NewGuid().ToString();
             //Creating the Users
             UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
             UserModelCustom UserReceiver = new UserModelCustom() { UserName = UsernameReceiver, Email = EmailReceiver, Id = IdReceiver };
@@ -140,11 +151,11 @@ namespace ZyronTests.ModelTesting
             context.AddRange(UserSender, UserReceiver);
             context.SaveChanges();
             //Creating the register if dont exist in database 
-            var SucessTrueExpected = this.chatmessages.CreateNewChat(Username, IdReceiver);
+            var SucessTrueExpected = this.chatmessages.CreateNewChat(Id, IdReceiver);
             Assert.True(SucessTrueExpected);
 
             //Trying create a object, but he already exists in database the combination.
-            var NoSucessFalseWanted = this.chatmessages.CreateNewChat(Username, IdReceiver);
+            var NoSucessFalseWanted = this.chatmessages.CreateNewChat(Id, IdReceiver);
             Assert.False(NoSucessFalseWanted);
 
         }
