@@ -70,6 +70,14 @@ namespace ZyronTests.ModelTesting
             Assert.Null(messages);
         }
 
+
+        [Fact]
+        public void GetMessagesOfAmongTwoUsers_All_Arguments_Are_Null()
+        {
+
+            var messages = this.chatmessages.GetMessagesOfAmongTwoUsers(null, null);
+            Assert.Null(messages);
+        }
         [Fact]
         public void GetMessagesOfAmongTwoUsers_Dont_Exist_a_ChatMessage_Object_Related_With_The_Both_Users()
         {

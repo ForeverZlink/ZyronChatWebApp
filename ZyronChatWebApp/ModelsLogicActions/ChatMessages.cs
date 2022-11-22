@@ -73,29 +73,37 @@ namespace ZyronChatWebApp.Logics
             //In this view, will be the chat, with all
             //history of messages of the users.
 
+            if (IdUserCaller != null && IdUserTalk!= null) {
 
-            var UserCaller = this.Context.Users.FirstOrDefault(x => x.Id == IdUserCaller);
-            var UserToTalk = this.Context.Users.FirstOrDefault(x => x.Id == IdUserTalk);
-            if (UserCaller != null && UserToTalk != null)
-            {
-                var chatmessages = this.Context.ChatMessages.Where(
-                        x => x.IdUserReceiver == UserCaller.Id && x.IdUserSender == UserToTalk.Id ||
-                            x.IdUserSender == UserCaller.Id && x.IdUserReceiver == UserToTalk.Id
-                        ).Include(x => x.MessagesList).FirstOrDefault();
-
-                var UserToSend = this.Context.Users.FirstOrDefault(x => x.Id == UserToTalk.Id);
-                
-                if (chatmessages != null)
+                var UserCaller = this.Context.Users.FirstOrDefault(x => x.Id == IdUserCaller);
+                var UserToTalk = this.Context.Users.FirstOrDefault(x => x.Id == IdUserTalk);
+                if (UserCaller != null && UserToTalk != null)
                 {
-                    var AllMessages = chatmessages.MessagesList
-                        .OrderBy(x => x.DateSended).OrderBy(x => x.TimeSended).ToArray();
+                    var chatmessages = this.Context.ChatMessages.Where(
+                            x => x.IdUserReceiver == UserCaller.Id && x.IdUserSender == UserToTalk.Id ||
+                                x.IdUserSender == UserCaller.Id && x.IdUserReceiver == UserToTalk.Id
+                            ).Include(x => x.MessagesList).FirstOrDefault();
 
-                    return AllMessages;
+                    var UserToSend = this.Context.Users.FirstOrDefault(x => x.Id == UserToTalk.Id);
 
-                    
-                }return null;
-                
+                    if (chatmessages != null)
+                    {
+                        var AllMessages = chatmessages.MessagesList
+                            .OrderBy(x => x.DateSended).OrderBy(x => x.TimeSended).ToArray();
+
+                        return AllMessages;
+
+
+                    }
+                    return null;
+
+                }
+                return null;
+
             }return null;
+            
+
+            
 
            
         }
