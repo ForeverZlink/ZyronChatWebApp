@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ZyronChatWebApp.Models;
+using ZyronChatWebApp.Data;
+using ZyronChatWebApp.Logics;
 
 namespace ZyronChatWebApp.Controllers
 {
@@ -9,7 +11,10 @@ namespace ZyronChatWebApp.Controllers
     {
         private readonly ILogger<DashManagementController> _logger;
 
-        public DashManagementController(ILogger<DashManagementController> logger)
+        public UserContext Context { get; set; }
+        public ChatMessagesLogic ChatMessagesLogic { get; set; }
+
+        public DashManagementController(UserContext dbcontext, ILogger<DashManagementController> logger)
         {
             _logger = logger;
         }
