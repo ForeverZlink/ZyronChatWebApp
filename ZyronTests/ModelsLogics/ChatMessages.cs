@@ -1,5 +1,6 @@
 
 
+using Microsoft.EntityFrameworkCore;
 using ZyronChatWebApp.Data;
 using ZyronChatWebApp.Logics;
 using ZyronChatWebApp.Models;
@@ -120,6 +121,85 @@ namespace ZyronTests.ModelTesting
            
             
            
+        }
+        [Fact]
+        public void OrderListOfContactsByRecentMessages_All_Ok() {
+            //Usersender object
+            string Id = Guid.NewGuid().ToString();
+            string Username = Guid.NewGuid().ToString();
+            UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
+
+            //First chat
+            string IdReceiver = Guid.NewGuid().ToString();
+            string UsernameReceiver = Guid.NewGuid().ToString();
+            UserModelCustom UserReceiver = new UserModelCustom() { UserName = UsernameReceiver, Email = EmailReceiver, Id = IdReceiver };
+           
+
+            //Second Chat
+            string IdReceiver2 = Guid.NewGuid().ToString();
+            string UsernameReceiver2 = Guid.NewGuid().ToString();
+            UserModelCustom UserReceiver2 = new UserModelCustom() { UserName = UsernameReceiver2, Email = EmailReceiver, Id = IdReceiver2 };
+            
+
+            //Third Chat
+            string IdReceiver3 = Guid.NewGuid().ToString();
+            string UsernameReceiver3 = Guid.NewGuid().ToString();
+            UserModelCustom UserReceiver3= new UserModelCustom() { UserName = UsernameReceiver3, Email = EmailReceiver, Id = IdReceiver3 };
+            
+
+            //Saving all users in database (its necessary save before of create a new Chat)
+            context.AddRange(UserSender, UserReceiver, UserReceiver2,UserReceiver3);
+            context.SaveChanges();
+
+            //Creating the Chat object 
+            var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(Id, IdReceiver);
+            var ChatCreatedWithSucess2 = this.chatmessages.CreateNewChat(Id, IdReceiver2);
+            var ChatCreatedWithSucess3 = this.chatmessages.CreateNewChat(Id, IdReceiver3);
+
+            //Messages of UserReceiver
+            string MessageOne = "More older Message";
+            string MessageTwo = "More recent Message";
+
+
+            //Saving messages with UserReceiver
+            var SavedWithSucess = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver.Id, MessageOne);
+            var SavedWithSucess2 = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver.Id, MessageTwo);
+
+            //Verifying the results
+            Assert.Equal(SavedWithSucess,UserReceiver.Id);
+            Assert.Equal(SavedWithSucess2, UserReceiver.Id);
+
+           
+            //Saving Messages with UserReceiver2
+            var SavedWithSucessSecondChat = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver2.Id, MessageOne);
+            var SavedWithSucessSecondChat2 = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver2.Id, MessageTwo);
+
+            //Verifying the results
+            Assert.Equal(SavedWithSucessSecondChat, UserReceiver2.Id);
+            Assert.Equal(SavedWithSucessSecondChat2, UserReceiver2.Id);
+
+            //Saving Messages with UserReceiver2
+            var SavedWithSucessThirdChat = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver3.Id, MessageOne);
+            var SavedWithSucessThirdChat2 = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver3.Id, MessageTwo);
+
+
+            
+            //Verifying the results
+            Assert.Equal(SavedWithSucessThirdChat, UserReceiver3.Id);
+            Assert.Equal(SavedWithSucessThirdChat2, UserReceiver3.Id);
+
+
+            string MessageMoreRecent = "Message more recent of all";
+            this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver.Id, MessageMoreRecent);
+            this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver3.Id, MessageMoreRecent);
+
+            //Ordering the chats
+            var result = this.chatmessages.OrderListOfContactsByRecentMessages(UserSender.Id);
+
+            
+            Assert.NotNull(result);
+
+
         }
         [Fact]
         public void Create_New_Chat_But_All_Arguments_Are_null() {
