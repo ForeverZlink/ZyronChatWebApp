@@ -109,7 +109,7 @@ namespace ZyronChatWebApp.Logics
         }
 
         
-        public List<ChatMessages> OrderListOfContactsByRecentMessages(string IdUserCaller)
+        public List<ChatMessages> OrderChatsByRecentMessages(string IdUserCaller)
         {
             //This method has the purpose of order the list of contact of a user 
             // but Taking as a principal factor the messages recents among the users 

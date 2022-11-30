@@ -194,7 +194,7 @@ namespace ZyronTests.ModelTesting
             this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver3.Id, MessageMoreRecent);
 
             //Ordering the chats
-            var result = this.chatmessages.OrderListOfContactsByRecentMessages(UserSender.Id);
+            var result = this.chatmessages.OrderChatsByRecentMessages(UserSender.Id);
 
             
             Assert.NotNull(result);
