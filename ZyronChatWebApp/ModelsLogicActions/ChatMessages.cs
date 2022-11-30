@@ -108,6 +108,83 @@ namespace ZyronChatWebApp.Logics
            
         }
 
+        
+        public List<ChatMessages> OrderListOfContactsByRecentMessages(string IdUserCaller)
+        {
+            //This method has the purpose of order the list of contact of a user 
+            // but Taking as a principal factor the messages recents among the users 
+            //What really matter here its the is how recent the message exchange 
+            // The messages of user caller are too count
+
+            if(IdUserCaller == null)
+            {
+                return null;
+            }
+
+            var  ChatMessagesObjects = this.Context.ChatMessages.Include("MessagesList").Where(x => x.IdUserSender == IdUserCaller || x.IdUserReceiver == IdUserCaller).ToList();
+
+            //The first Object is with the more recent message
+            var ChatsOrderly = new List<ChatMessages>();
+
+            //Ordering the Message in each ChatObject
+            foreach (var  Chat in ChatMessagesObjects)
+            {
+                 
+                Chat.MessagesList = Chat.MessagesList.OrderByDescending(x => x.DateSended).ToList();
+
+            }
+
+            
+            //Starting a ordering the Chats (of the more recent to the more older)
+            foreach (var ChatToOrder in ChatMessagesObjects)
+            {
+                var MostRecentMessageOfTheChatToOrder = ChatToOrder.MessagesList.FirstOrDefault();
+                
+                if (ChatsOrderly.Count == 0)
+                {
+                    ChatsOrderly.Add(ChatToOrder);
+                    continue;
+                }
+
+                else {
+                    var MessageMoreRecentInListOrderned = ChatsOrderly.FirstOrDefault().MessagesList.FirstOrDefault();
+                    var MessageMoreOlderInListOrderned = ChatsOrderly.LastOrDefault().MessagesList.LastOrDefault();
+
+                    if (MostRecentMessageOfTheChatToOrder.DateSended.CompareTo(MessageMoreRecentInListOrderned.DateSended) > 0)
+                    {
+                        ChatsOrderly.Insert(0, ChatToOrder);
+
+                    }
+                    else if (ChatToOrder.MessagesList.FirstOrDefault().DateSended.CompareTo(MessageMoreOlderInListOrderned.DateSended) < 0)
+                    {
+                        ChatsOrderly.Add(ChatToOrder);
+                    }
+                    else
+                    {
+                        foreach (var Chat in ChatsOrderly)
+                        {
+                            var MessageMostRecentOfThisChat = Chat.MessagesList.FirstOrDefault();
+
+                            if (MostRecentMessageOfTheChatToOrder.DateSended.CompareTo(MessageMostRecentOfThisChat.DateSended) > 0)
+                            {
+                                int IndexChat = ChatMessagesObjects.ToList().IndexOf(Chat);
+                                ChatsOrderly.Insert(IndexChat, ChatToOrder);
+                                break;
+                            }
+                        }
+                    }
+
+
+
+                }
+                
+
+            }
+
+            return ChatsOrderly;
+            
+
+        }
         public bool CreateNewChat(string IdUserSender,string IdUserToReceiveMessages)
         {
             if (IdUserToReceiveMessages != null && IdUserSender !=null)
