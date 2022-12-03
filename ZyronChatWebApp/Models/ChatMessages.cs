@@ -15,9 +15,9 @@ namespace ZyronChatWebApp.Models
         public string IdUserSender { get; set; }
 
         
-        public  UserModelCustom UserReceiver{ get; set; }
+        public UserPublic UserReceiver { get; set; }
 
-        public  UserModelCustom UserSender { get; set; }
+        public UserPublic UserSender { get; set; }
 
         public  ICollection<Messages> MessagesList { get; set; }
 

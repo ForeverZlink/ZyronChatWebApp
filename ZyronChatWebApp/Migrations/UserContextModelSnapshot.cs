@@ -298,6 +298,24 @@ namespace ZyronChatWebApp.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("ZyronChatWebApp.Models.UserPublic", b =>
+                {
+                    b.Property<string>("IdPublic")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("IdPrivate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdPublic");
+
+                    b.ToTable("UserPublic");
+                });
+
             modelBuilder.Entity("ZyronChatWebApp.Models.UserScheduleListOfContacts", b =>
                 {
                     b.Property<int>("Id")
@@ -371,13 +389,13 @@ namespace ZyronChatWebApp.Migrations
 
             modelBuilder.Entity("ZyronChatWebApp.Models.ChatMessages", b =>
                 {
-                    b.HasOne("ZyronChatWebApp.Models.UserModelCustom", "UserReceiver")
+                    b.HasOne("ZyronChatWebApp.Models.UserPublic", "UserReceiver")
                         .WithMany("UserReceiver")
                         .HasForeignKey("IdUserReceiver")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("ZyronChatWebApp.Models.UserModelCustom", "UserSender")
+                    b.HasOne("ZyronChatWebApp.Models.UserPublic", "UserSender")
                         .WithMany("UsersSender")
                         .HasForeignKey("IdUserSender")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -412,7 +430,7 @@ namespace ZyronChatWebApp.Migrations
 
             modelBuilder.Entity("ZyronChatWebApp.Models.UserScheduleListOfContacts", b =>
                 {
-                    b.HasOne("ZyronChatWebApp.Models.UserModelCustom", "User")
+                    b.HasOne("ZyronChatWebApp.Models.UserPublic", "User")
                         .WithOne("UserScheduleListOfContacts")
                         .HasForeignKey("ZyronChatWebApp.Models.UserScheduleListOfContacts", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -426,7 +444,7 @@ namespace ZyronChatWebApp.Migrations
                     b.Navigation("MessagesList");
                 });
 
-            modelBuilder.Entity("ZyronChatWebApp.Models.UserModelCustom", b =>
+            modelBuilder.Entity("ZyronChatWebApp.Models.UserPublic", b =>
                 {
                     b.Navigation("UserReceiver");
 

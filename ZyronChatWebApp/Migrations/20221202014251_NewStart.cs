@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ZyronChatWebApp.Migrations
 {
-    public partial class NewMigrationsMold : Migration
+    public partial class NewStart : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,19 @@ namespace ZyronChatWebApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPublic",
+                columns: table => new
+                {
+                    IdPublic = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IdPrivate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPublic", x => x.IdPublic);
                 });
 
             migrationBuilder.CreateTable(
@@ -166,15 +179,15 @@ namespace ZyronChatWebApp.Migrations
                 {
                     table.PrimaryKey("PK_ChatMessages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ChatMessages_AspNetUsers_IdUserReceiver",
+                        name: "FK_ChatMessages_UserPublic_IdUserReceiver",
                         column: x => x.IdUserReceiver,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalTable: "UserPublic",
+                        principalColumn: "IdPublic");
                     table.ForeignKey(
-                        name: "FK_ChatMessages_AspNetUsers_IdUserSender",
+                        name: "FK_ChatMessages_UserPublic_IdUserSender",
                         column: x => x.IdUserSender,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalTable: "UserPublic",
+                        principalColumn: "IdPublic");
                 });
 
             migrationBuilder.CreateTable(
@@ -189,10 +202,10 @@ namespace ZyronChatWebApp.Migrations
                 {
                     table.PrimaryKey("PK_UserScheduleListOfContacts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserScheduleListOfContacts_AspNetUsers_UserId",
+                        name: "FK_UserScheduleListOfContacts_UserPublic_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalTable: "UserPublic",
+                        principalColumn: "IdPublic",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -332,13 +345,16 @@ namespace ZyronChatWebApp.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "UserScheduleListOfContacts");
 
             migrationBuilder.DropTable(
                 name: "ChatMessages");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "UserPublic");
         }
     }
 }
