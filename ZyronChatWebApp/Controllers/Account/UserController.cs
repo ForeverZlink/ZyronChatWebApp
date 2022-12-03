@@ -71,6 +71,33 @@ namespace ZyronChatWebApp.Controllers.Account
             return View();
         }
 
+
+        public bool RegisterUserPublicVisibility(string IdUser, string Username, string Email)
+        {
+
+            //Creates a new UserPublic object. 
+            //This object has the purpose of the create relationship with another 
+            //models without that any data to be hacked.
+            if (IdUser==null || Username==null || Email== null)
+            {
+                throw new ArgumentException("Arguments passed are null");
+            }
+            string IdPublic = Guid.NewGuid().ToString();
+            var NewUserPublic = new UserPublic() { IdPublic = IdPublic, IdPrivate = IdUser };
+            if (NewUserPublic != null)
+            {
+                var result = this.Context.UserPublic.Add(NewUserPublic);
+                if (result==null) {
+                    throw new NullReferenceException("Null object ");
+                }
+                var saving = this.Context.SaveChanges();
+                return true;
+
+            }
+            return false;
+            
+        }
+
         [HttpPost]
         public async Task<IActionResult> RegisterUser(string Name, string Password, string Email)
         {
