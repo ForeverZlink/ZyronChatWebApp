@@ -110,6 +110,11 @@ namespace ZyronChatWebApp.Controllers.Account
             
             if (result.Succeeded)
             {
+                var ResultUserPublicCreation = this.RegisterUserPublicVisibility(User.Id, Name, Email);
+                if (ResultUserPublicCreation == null)
+                {
+                    return NotFound();
+                }
                 //New list now its required, because to create a relationship among UserModelCustom and UserScheduleListOfContacts its necessary
                 // of UserScheduleListOfContacts receive the User.id for identification.
                 var List = new UserScheduleListOfContacts() { UserId = User.Id };
