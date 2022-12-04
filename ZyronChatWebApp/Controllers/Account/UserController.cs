@@ -83,7 +83,7 @@ namespace ZyronChatWebApp.Controllers.Account
                 throw new ArgumentException("Arguments passed are null");
             }
             string IdPublic = Guid.NewGuid().ToString();
-            var NewUserPublic = new UserPublic() { IdPublic = IdPublic, IdPrivate = IdUser };
+            var NewUserPublic = new UserPublic() { IdPublic = IdPublic, IdPrivate = IdUser,Username=Username };
             if (NewUserPublic != null)
             {
                 var result = this.Context.UserPublic.Add(NewUserPublic);
