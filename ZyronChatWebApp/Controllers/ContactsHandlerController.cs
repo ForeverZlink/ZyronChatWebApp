@@ -42,7 +42,7 @@ namespace ZyronChatWebApp.Controllers
                 var IdUser = this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
                 Log.Information("Getting the list of contact of the users ");
-                var listOfContacts = this.Context.UserScheduleListOfContacts.Include("ContactsInformations").FirstOrDefault(x => x.UserId == IdUser);
+                var listOfContacts = this.Context.UserScheduleListOfContacts.Include("ContactsInformations").FirstOrDefault(x => x.User.IdPrivate== IdUser);
 
                 Log.Information("Verifying if the list of contact are valid");
                 if (listOfContacts != null)
