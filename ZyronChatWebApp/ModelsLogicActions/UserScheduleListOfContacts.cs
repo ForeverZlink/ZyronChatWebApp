@@ -15,17 +15,17 @@ namespace ZyronChatWebApp.Logics
             this.Context = userContext;
         }
 
-        public bool AddNewContact(string IdUser, string IdOfContact, string Surname)
+        public bool AddNewContact(string IdPublicUser, string IdOfContactPublic, string Surname)
         {
             //Seach in database the object create when the user was created in the first time. 
             //Here its possible find because when the user was created a new UserScheduleListOfContacts object receive a UserId
             //This Userid its the prove of relationship among both entitys
             //Not its possible exists two UserScheduleListOfContacts with the same UserId
-            if(IdOfContact ==null && IdUser==null)
+            if(IdOfContactPublic ==null && IdPublicUser == null)
             {
                 return false;
             }
-            var UserScheduleListOfContactsInstance = this.Context.UserScheduleListOfContacts.FirstOrDefault(x => x.UserId == IdUser);
+            var UserScheduleListOfContactsInstance = this.Context.UserScheduleListOfContacts.FirstOrDefault(x => x.UserId == IdPublicUser);
             if (UserScheduleListOfContactsInstance == null)
             {
                 return false;
@@ -33,13 +33,13 @@ namespace ZyronChatWebApp.Logics
 
             var ContactInformation = this.Context.ContactInformations.FirstOrDefault(
                 x => x.IdUserScheduleListOfContacts == UserScheduleListOfContactsInstance.Id
-                && x.UsernameOfIdentification == IdOfContact);
+                && x.UsernameOfIdentification == IdOfContactPublic);
 
             if (ContactInformation == null)
             {
                 var ContactInfo = new ContactInformations()
                 {
-                    UsernameOfIdentification = IdOfContact,
+                    UsernameOfIdentification = IdOfContactPublic,
                     Surname = Surname,
                     IdUserScheduleListOfContacts = UserScheduleListOfContactsInstance.Id
                 };
