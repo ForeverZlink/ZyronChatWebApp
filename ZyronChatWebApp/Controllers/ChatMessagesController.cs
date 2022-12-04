@@ -27,27 +27,27 @@ namespace ZyronChatWebApp.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> ChatMenu(string IdUserToTalk)
+        public async Task<IActionResult> ChatMenu(string IdPublicUserToTalk)
         {
             //This action is to take all messages among
             //two users and return to a view. 
             //In this view, will be the chat, with all
             //history of messages of the users.
             this.logger.LogInformation("Start ChatMenu view");
-            if (IdUserToTalk == null)
+            if (IdPublicUserToTalk == null)
             {
                 this.logger.LogError("UserToTalkUsername its null");
                 return NotFound();
             }
 
             this.logger.LogInformation("Getting username of user caller of method");
-            string IdUserCaller = this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            string IdUserCallerPrivate = this.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            string IdUserCallerPublic = this.Context.UserPublic.FirstOrDefault(x => x.IdPrivate == IdUserCallerPrivate).IdPublic;
 
-
-            if (IdUserCaller != null)
+            if (IdUserCallerPrivate != null && IdUserCallerPublic!= null)
             {
                 this.logger.LogCritical("Getting messages");
-                var messages = this.ChatMessagesLogic.GetMessagesOfAmongTwoUsers(IdUserCaller, IdUserToTalk);
+                var messages = this.ChatMessagesLogic.GetMessagesOfAmongTwoUsers(IdUserCallerPublic, IdPublicUserToTalk);
                 this.logger.LogInformation("End of search messages");
 
                 this.logger.LogInformation("Verifying messages");
@@ -59,7 +59,7 @@ namespace ZyronChatWebApp.Controllers
                 this.logger.LogInformation("Starting to setting ViewBag propertys");
 
                 this.logger.LogInformation("Setting First Viewbag property ");
-                this.ViewBag.UserToSend = IdUserToTalk;
+                this.ViewBag.UserToSend = IdPublicUserToTalk;
 
                 this.logger.LogInformation("Setting Second ViewBag propertys");
                 this.ViewBag.AllMessages = messages;

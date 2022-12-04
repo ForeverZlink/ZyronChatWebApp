@@ -31,7 +31,7 @@ namespace ZyronChatWebApp.Data
                 .WithOne(ad => ad.User)
                 .HasForeignKey<UserScheduleListOfContacts>(ad => ad.UserId);
 
-
+           
             //One to many
             modelBuilder.Entity<UserScheduleListOfContacts>()
                 .HasMany(x => x.ContactsInformations)
