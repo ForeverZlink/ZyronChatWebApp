@@ -117,11 +117,17 @@ namespace ZyronChatWebApp.Controllers.Account
                 }
                 //New list now its required, because to create a relationship among UserModelCustom and UserScheduleListOfContacts its necessary
                 // of UserScheduleListOfContacts receive the User.id for identification.
-                var List = new UserScheduleListOfContacts() { UserId = User.Id };
-                this.Context.Add(List);
-                this.Context.SaveChanges();
+                var IdUserPublic =this.Context.UserPublic.FirstOrDefault(x => x.IdPrivate == User.Id).IdPublic;
+                if (IdUserPublic != null)
+                {
+                    var List = new UserScheduleListOfContacts() { UserId = IdUserPublic };
+                    this.Context.Add(List);
+                    this.Context.SaveChanges();
 
-                ViewBag.UserCreatedWithSucess = true;
+                    ViewBag.UserCreatedWithSucess = true;
+                    return View("Index");
+                }
+                ViewBag.UserCreatedWithSucess = false;
                 return View("Index");
             }
             else
