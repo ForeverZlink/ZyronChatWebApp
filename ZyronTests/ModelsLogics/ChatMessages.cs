@@ -28,31 +28,35 @@ namespace ZyronTests.ModelTesting
         public void GetMessagesOfAmongTwoUsers_All_Ok()
         {
             string Id = Guid.NewGuid().ToString();
+            string IdPublic = Guid.NewGuid().ToString();
             string Username = Guid.NewGuid().ToString();
 
+
             string IdReceiver = Guid.NewGuid().ToString();
+            string IdPublicReceiver = Guid.NewGuid().ToString();
             string UsernameReceiver = Guid.NewGuid().ToString();
             //Creating the Users
-            UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
-            UserModelCustom UserReceiver = new UserModelCustom() { UserName=UsernameReceiver,Email=EmailReceiver,Id = IdReceiver};
+            UserPublic UserSender = new UserPublic() {IdPrivate= Id,Username = Username, IdPublic= IdPublic };
+            UserPublic UserReceiver = new UserPublic() {IdPrivate=IdReceiver, Username=UsernameReceiver,IdPublic = IdPublicReceiver };
 
-            //Saving in database 
-            context.AddRange(UserSender, UserReceiver);
+            context.UserPublic.AddRange(UserSender,UserReceiver);
+            
+
             context.SaveChanges();
 
             //Creating new Chat (object to relate users and the messages) 
-            var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(Id, IdReceiver);
+            var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(IdPublic, IdPublicReceiver);
 
 
             //Messages defition
             string Message = "Hello world";
 
             //Saving the messages
-            var SavedWithSucess = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver.Id, Message);
+            var SavedWithSucess = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.IdPublic, UserReceiver.IdPublic, Message);
             Assert.NotNull(SavedWithSucess);
 
             //Getting the messages
-            var MessageList = this.chatmessages.GetMessagesOfAmongTwoUsers(UserSender.Id,UserReceiver.Id);
+            var MessageList = this.chatmessages.GetMessagesOfAmongTwoUsers(UserSender.IdPublic, UserReceiver.IdPublic);
             //Verify if Messagelist not is null (case be, the method has failed)
             Assert.NotNull(MessageList);
 
@@ -83,38 +87,50 @@ namespace ZyronTests.ModelTesting
         public void GetMessagesOfAmongTwoUsers_Dont_Exist_a_ChatMessage_Object_Related_With_The_Both_Users()
         {
             string Id = Guid.NewGuid().ToString();
+            string IdPublic = Guid.NewGuid().ToString();
             string Username = Guid.NewGuid().ToString();
 
+
+            string IdPublicReceiver = Guid.NewGuid().ToString();
             string IdReceiver = Guid.NewGuid().ToString();
             string UsernameReceiver = Guid.NewGuid().ToString();
             //Creating the Users
-            UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
-            UserModelCustom UserReceiver = new UserModelCustom() { UserName = UsernameReceiver, Email = EmailReceiver, Id = IdReceiver };
+            UserPublic UserSender = new UserPublic() { IdPrivate = Id, Username = Username, IdPublic = IdPublic };
+            UserPublic UserReceiver = new UserPublic() { IdPrivate = IdReceiver, Username = UsernameReceiver, IdPublic = IdPublicReceiver };
+
+            UserModelCustom UserSenderSystem = new UserModelCustom() { Id = Id, UserName = Username, };
+            UserModelCustom UserReceiverSystem = new UserModelCustom() { Id = IdReceiver, UserName = UsernameReceiver, };
 
             //Saving in database 
-            context.AddRange(UserSender, UserReceiver);
+            context.AddRange(UserSender, UserReceiver,UserSenderSystem,UserReceiverSystem);
             context.SaveChanges();
 
-            var messages = this.chatmessages.GetMessagesOfAmongTwoUsers(UserSender.Id, UserReceiver.Id);
+            var messages = this.chatmessages.GetMessagesOfAmongTwoUsers(UserSender.IdPublic, UserReceiver.IdPublic);
             Assert.Null(messages);
         }
         [Fact]
         public void Create_New_Chat_All_Ok()
         {
             string Id = Guid.NewGuid().ToString();
+            string IdPublic = Guid.NewGuid().ToString();
             string Username = Guid.NewGuid().ToString();
 
+
+            string IdPublicReceiver = Guid.NewGuid().ToString();
             string IdReceiver = Guid.NewGuid().ToString();
             string UsernameReceiver = Guid.NewGuid().ToString();
             //Creating the Users
-            UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
-            UserModelCustom UserReceiver = new UserModelCustom() { UserName = UsernameReceiver, Email = EmailReceiver, Id = IdReceiver };
 
+            UserPublic UserSender = new UserPublic() { IdPrivate = Id, Username = Username, IdPublic = IdPublic };
+            UserPublic UserReceiver = new UserPublic() { IdPrivate = IdReceiver, Username = UsernameReceiver, IdPublic = IdPublicReceiver };
+
+            UserModelCustom UserSenderSystem = new UserModelCustom() { Id = Id, UserName = Username, };
+            UserModelCustom UserReceiverSystem = new UserModelCustom() { Id = IdReceiver, UserName = UsernameReceiver, };
             //Saving in database 
-            context.AddRange(UserSender, UserReceiver);
+            context.AddRange(UserSender, UserReceiver, UserSenderSystem, UserReceiverSystem);
             context.SaveChanges();
 
-            var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(Id, IdReceiver);
+            var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(IdPublic, IdPublicReceiver);
             
             Assert.True(ChatCreatedWithSucess);
             
@@ -124,37 +140,45 @@ namespace ZyronTests.ModelTesting
         }
         [Fact]
         public void OrderListOfContactsByRecentMessages_All_Ok() {
-            //Usersender object
             string Id = Guid.NewGuid().ToString();
+            string IdPublic = Guid.NewGuid().ToString();
             string Username = Guid.NewGuid().ToString();
-            UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
+            UserPublic UserSender = new UserPublic() {IdPrivate=Id, Username = Username, IdPublic = IdPublic };
 
             //First chat
             string IdReceiver = Guid.NewGuid().ToString();
+            string IdPublicReceiver = Guid.NewGuid().ToString();
             string UsernameReceiver = Guid.NewGuid().ToString();
-            UserModelCustom UserReceiver = new UserModelCustom() { UserName = UsernameReceiver, Email = EmailReceiver, Id = IdReceiver };
+
+            UserPublic UserReceiver = new UserPublic() {IdPrivate=IdReceiver, Username = UsernameReceiver, IdPublic = IdPublicReceiver };
            
 
             //Second Chat
             string IdReceiver2 = Guid.NewGuid().ToString();
             string UsernameReceiver2 = Guid.NewGuid().ToString();
-            UserModelCustom UserReceiver2 = new UserModelCustom() { UserName = UsernameReceiver2, Email = EmailReceiver, Id = IdReceiver2 };
+            string IdPublicReceiver2 = Guid.NewGuid().ToString();
+            UserPublic UserReceiver2 = new UserPublic() {IdPrivate=IdPublicReceiver2, Username = UsernameReceiver2,IdPublic = IdPublicReceiver2 };
             
 
             //Third Chat
             string IdReceiver3 = Guid.NewGuid().ToString();
             string UsernameReceiver3 = Guid.NewGuid().ToString();
-            UserModelCustom UserReceiver3= new UserModelCustom() { UserName = UsernameReceiver3, Email = EmailReceiver, Id = IdReceiver3 };
-            
+            string IdPublicReceiver3 = Guid.NewGuid().ToString();
+            UserPublic UserReceiver3 = new UserPublic() {IdPrivate=IdReceiver3, Username = UsernameReceiver3, IdPublic = IdPublicReceiver3 };
 
+            UserModelCustom UserSenderSystem = new UserModelCustom() { Id = Id, UserName = Username, };
+            UserModelCustom UserReceiverSystem = new UserModelCustom() { Id = IdReceiver, UserName = UsernameReceiver };
+            UserModelCustom UserReceiverSystem2 = new UserModelCustom() { Id = IdReceiver2, UserName = UsernameReceiver2 };
+            UserModelCustom UserReceiverSystem3 = new UserModelCustom() { Id = IdReceiver3, UserName = UsernameReceiver3, };
             //Saving all users in database (its necessary save before of create a new Chat)
-            context.AddRange(UserSender, UserReceiver, UserReceiver2,UserReceiver3);
+            context.AddRange(UserSender, UserReceiver, UserReceiver2,UserReceiver3,
+                               UserSenderSystem,UserReceiverSystem,UserReceiverSystem2,UserReceiverSystem3);
             context.SaveChanges();
 
             //Creating the Chat object 
-            var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(Id, IdReceiver);
-            var ChatCreatedWithSucess2 = this.chatmessages.CreateNewChat(Id, IdReceiver2);
-            var ChatCreatedWithSucess3 = this.chatmessages.CreateNewChat(Id, IdReceiver3);
+            var ChatCreatedWithSucess = this.chatmessages.CreateNewChat(IdPublic, IdPublicReceiver);
+            var ChatCreatedWithSucess2 = this.chatmessages.CreateNewChat(IdPublic, IdPublicReceiver2);
+            var ChatCreatedWithSucess3 = this.chatmessages.CreateNewChat(IdPublic, IdPublicReceiver3);
 
             //Messages of UserReceiver
             string MessageOne = "More older Message";
@@ -162,39 +186,39 @@ namespace ZyronTests.ModelTesting
 
 
             //Saving messages with UserReceiver
-            var SavedWithSucess = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver.Id, MessageOne);
-            var SavedWithSucess2 = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver.Id, MessageTwo);
+            var SavedWithSucess = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.IdPublic, UserReceiver.IdPublic, MessageOne);
+            var SavedWithSucess2 = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.IdPublic, UserReceiver.IdPublic, MessageTwo);
 
             //Verifying the results
-            Assert.Equal(SavedWithSucess,UserReceiver.Id);
-            Assert.Equal(SavedWithSucess2, UserReceiver.Id);
+            Assert.Equal(SavedWithSucess,UserReceiver.IdPublic);
+            Assert.Equal(SavedWithSucess2, UserReceiver.IdPublic);
 
            
             //Saving Messages with UserReceiver2
-            var SavedWithSucessSecondChat = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver2.Id, MessageOne);
-            var SavedWithSucessSecondChat2 = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver2.Id, MessageTwo);
+            var SavedWithSucessSecondChat = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.IdPublic, UserReceiver2.IdPublic, MessageOne);
+            var SavedWithSucessSecondChat2 = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.IdPublic, UserReceiver2.IdPublic, MessageTwo);
 
             //Verifying the results
-            Assert.Equal(SavedWithSucessSecondChat, UserReceiver2.Id);
-            Assert.Equal(SavedWithSucessSecondChat2, UserReceiver2.Id);
+            Assert.Equal(SavedWithSucessSecondChat, UserReceiver2.IdPrivate);
+            Assert.Equal(SavedWithSucessSecondChat2, UserReceiver2.IdPrivate);
 
             //Saving Messages with UserReceiver2
-            var SavedWithSucessThirdChat = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver3.Id, MessageOne);
-            var SavedWithSucessThirdChat2 = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver3.Id, MessageTwo);
+            var SavedWithSucessThirdChat = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.IdPublic, UserReceiver3.IdPublic, MessageOne);
+            var SavedWithSucessThirdChat2 = this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.IdPublic, UserReceiver3.IdPublic, MessageTwo);
 
 
             
             //Verifying the results
-            Assert.Equal(SavedWithSucessThirdChat, UserReceiver3.Id);
-            Assert.Equal(SavedWithSucessThirdChat2, UserReceiver3.Id);
+            Assert.Equal(SavedWithSucessThirdChat, UserReceiver3.IdPublic);
+            Assert.Equal(SavedWithSucessThirdChat2, UserReceiver3.IdPublic);
 
 
             string MessageMoreRecent = "Message more recent of all";
-            this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver.Id, MessageMoreRecent);
-            this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.Id, UserReceiver3.Id, MessageMoreRecent);
+            this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.IdPublic, UserReceiver.IdPublic, MessageMoreRecent);
+            this.chatmessages.SaveMessagesChatBetweenTwoUsers(UserSender.IdPublic, UserReceiver3.IdPublic, MessageMoreRecent);
 
             //Ordering the chats
-            var result = this.chatmessages.OrderChatsByRecentMessages(UserSender.Id);
+            var result = this.chatmessages.OrderChatsByRecentMessages(UserSender.IdPublic);
 
             
             Assert.NotNull(result);
@@ -227,23 +251,25 @@ namespace ZyronTests.ModelTesting
             //create a object of the type ChatMessages when already exist 
             // a entity with the both users related.
             string Id = Guid.NewGuid().ToString();
+            string IdPublic = Guid.NewGuid().ToString();
             string Username = Guid.NewGuid().ToString();
 
+
+            string IdPublicReceiver = Guid.NewGuid().ToString();
             string IdReceiver = Guid.NewGuid().ToString();
             string UsernameReceiver = Guid.NewGuid().ToString();
             //Creating the Users
-            UserModelCustom UserSender = new UserModelCustom() { UserName = Username, Email = Email, Id = Id };
-            UserModelCustom UserReceiver = new UserModelCustom() { UserName = UsernameReceiver, Email = EmailReceiver, Id = IdReceiver };
-
+            UserPublic UserSender = new UserPublic() { IdPrivate = Id, Username = Username, IdPublic = IdPublic };
+            UserPublic UserReceiver = new UserPublic() { IdPrivate = IdReceiver, Username = UsernameReceiver, IdPublic = IdPublicReceiver };
             //Saving in database 
             context.AddRange(UserSender, UserReceiver);
             context.SaveChanges();
             //Creating the register if dont exist in database 
-            var SucessTrueExpected = this.chatmessages.CreateNewChat(Id, IdReceiver);
+            var SucessTrueExpected = this.chatmessages.CreateNewChat(IdPublic, IdPublicReceiver);
             Assert.True(SucessTrueExpected);
 
             //Trying create a object, but he already exists in database the combination.
-            var NoSucessFalseWanted = this.chatmessages.CreateNewChat(Id, IdReceiver);
+            var NoSucessFalseWanted = this.chatmessages.CreateNewChat(IdPublic, IdPublicReceiver);
             Assert.False(NoSucessFalseWanted);
 
         }
