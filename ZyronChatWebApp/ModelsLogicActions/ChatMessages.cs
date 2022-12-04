@@ -26,18 +26,18 @@ namespace ZyronChatWebApp.Logics
                 return null;
             }
         }
-        public string SaveMessagesChatBetweenTwoUsers(string IdUserCaller, string IdUserToSend, string message)
+        public string SaveMessagesChatBetweenTwoUsers(string IdPublicUserCaller, string IdPublicUserToSend, string message)
         {
             //Save the message between two users
 
-            var user = this.Context.Users.FirstOrDefault(x => x.Id == IdUserCaller);
-            var userToSend = this.Context.Users.FirstOrDefault(x => x.Id == IdUserToSend);
+            var user = this.Context.UserPublic.FirstOrDefault(x => x.IdPublic == IdPublicUserCaller);
+            var userToSend = this.Context.UserPublic.FirstOrDefault(x => x.IdPublic == IdPublicUserToSend);
             if (userToSend != null && user != null)
             {
             SearchChat:
                 var Chat = this.Context.ChatMessages.FirstOrDefault(
-                    x => x.IdUserReceiver == user.Id && x.IdUserSender == userToSend.Id ||
-                        x.IdUserSender == user.Id && x.IdUserReceiver == userToSend.Id
+                    x => x.IdUserReceiver == user.IdPublic && x.IdUserSender == userToSend.IdPublic ||
+                        x.IdUserSender == user.IdPublic && x.IdUserReceiver == userToSend.IdPublic
                     );
 
                 if (Chat != null)
@@ -46,18 +46,18 @@ namespace ZyronChatWebApp.Logics
                     string id = Guid.NewGuid().ToString();
                     DateTime DatetimeTodaySended = DateTime.UtcNow;
                     TimeSpan TimeMessageSended = DateTime.UtcNow.TimeOfDay;
-                    var MessageSaved = new Messages() { Id = id, Sender = user.UserName, Message = message, ChatMessagesId = Chat.Id, TimeSended = TimeMessageSended, DateSended = DatetimeTodaySended };
+                    var MessageSaved = new Messages() { Id = id, Sender = user.Username, Message = message, ChatMessagesId = Chat.Id, TimeSended = TimeMessageSended, DateSended = DatetimeTodaySended };
 
 
                     this.Context.Messages.Add(MessageSaved);
                     this.Context.SaveChanges();
 
 
-                    return userToSend.Id;
+                    return userToSend.IdPublic;
                 }
                 else
                 {
-                    this.CreateNewChat(user.UserName,userToSend.Id);
+                    this.CreateNewChat(user.IdPublic,userToSend.IdPublic);
                     goto SearchChat;
                 }
             }
@@ -185,19 +185,19 @@ namespace ZyronChatWebApp.Logics
             
 
         }
-        public bool CreateNewChat(string IdUserSender,string IdUserToReceiveMessages)
+        public bool CreateNewChat(string IdPublicUserSender,string IdPublicUserToReceiveMessages)
         {
-            if (IdUserToReceiveMessages != null && IdUserSender !=null)
+            if (IdPublicUserToReceiveMessages != null && IdPublicUserSender != null)
             {
                 
-                var UserLogged = this.Context.Users.FirstOrDefault(x => x.Id == IdUserSender);
-                var UserToSend = this.Context.Users.FirstOrDefault(x => x.Id == IdUserToReceiveMessages);
+                var UserLogged = this.Context.UserPublic.FirstOrDefault(x => x.IdPublic == IdPublicUserSender);
+                var UserToSend = this.Context.UserPublic.FirstOrDefault(x => x.IdPublic == IdPublicUserSender);
                 if (UserLogged != null && UserToSend !=null)
                 {
                     //Search if a object ChatMessages already exists among the both user
                     var chatmessages = this.Context.ChatMessages.FirstOrDefault(
-                        x => x.IdUserReceiver == UserLogged.Id && x.IdUserSender == IdUserToReceiveMessages ||
-                            x.IdUserSender == UserLogged.Id && x.IdUserReceiver == IdUserToReceiveMessages
+                        x => x.IdUserReceiver == UserLogged.IdPublic && x.IdUserSender == IdPublicUserToReceiveMessages ||
+                            x.IdUserSender == UserLogged.IdPublic && x.IdUserReceiver == IdPublicUserToReceiveMessages
                         );
                     //If null, it means that the user being added has not yet added the user performing this action.
                     //So the user who is now adding is the first to open the connection and the program will not need
@@ -205,7 +205,7 @@ namespace ZyronChatWebApp.Logics
                     if (chatmessages == null)
                     {
                         string id = Guid.NewGuid().ToString();
-                        var chat = new ChatMessages() { Id = id, IdUserSender = UserLogged.Id, IdUserReceiver = IdUserToReceiveMessages };
+                        var chat = new ChatMessages() { Id = id, IdUserSender = UserLogged.IdPublic, IdUserReceiver = IdPublicUserToReceiveMessages };
                         this.Context.Add(chat);
                          this.Context.SaveChanges();
 
