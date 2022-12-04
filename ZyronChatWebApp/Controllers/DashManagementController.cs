@@ -16,7 +16,9 @@ namespace ZyronChatWebApp.Controllers
 
         public DashManagementController(UserContext dbcontext, ILogger<DashManagementController> logger)
         {
-            _logger = logger;
+            this.Context = dbcontext;
+            this.ChatMessagesLogic = new ChatMessagesLogic(dbcontext);
+            this._logger = logger;
         }
 
         public IActionResult Index()
