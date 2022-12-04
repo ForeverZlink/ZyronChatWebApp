@@ -109,19 +109,19 @@ namespace ZyronChatWebApp.Logics
         }
 
         
-        public List<ChatMessages> OrderChatsByRecentMessages(string IdUserCaller)
+        public List<ChatMessages> OrderChatsByRecentMessages(string IdPublicUserCaller)
         {
             //This method has the purpose of order the list of contact of a user 
             // but Taking as a principal factor the messages recents among the users 
             //What really matter here its the is how recent the message exchange 
             // The messages of user caller are too count
 
-            if(IdUserCaller == null)
+            if(IdPublicUserCaller == null)
             {
                 return null;
             }
 
-            var  ChatMessagesObjects = this.Context.ChatMessages.Include("MessagesList").Where(x => x.IdUserSender == IdUserCaller || x.IdUserReceiver == IdUserCaller).ToList();
+            var  ChatMessagesObjects = this.Context.ChatMessages.Include("MessagesList").Where(x => x.IdUserSender == IdPublicUserCaller || x.IdUserReceiver == IdPublicUserCaller).ToList();
 
             //The first Object is with the more recent message
             var ChatsOrderly = new List<ChatMessages>();
