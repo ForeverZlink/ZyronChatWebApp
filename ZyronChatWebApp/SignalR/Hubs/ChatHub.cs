@@ -14,10 +14,10 @@ namespace ZyronChatWebApp.SignalR.Hubs
     public class ChatHub : Hub
     {
         public ChatMessagesLogic ChatMessageLogic {get;set;}
-        
+        public UserContext dbcontext { get; set; }
         public ChatHub(UserContext dbcontext)
         {
-
+            this.dbcontext = dbcontext;
             this.ChatMessageLogic = new ChatMessagesLogic(dbcontext);
 
             
