@@ -66,25 +66,25 @@ namespace ZyronChatWebApp.Logics
 
         }
 
-        public Messages[]  GetMessagesOfAmongTwoUsers(string IdUserCaller, string IdUserTalk)
+        public Messages[]  GetMessagesOfAmongTwoUsers(string IdPublicUserCaller, string IdPublicUserTalk)
         {
             //This action is to take all messages among
             //two users and return to a view. 
             //In this view, will be the chat, with all
             //history of messages of the users.
 
-            if (IdUserCaller != null && IdUserTalk!= null) {
+            if (IdPublicUserCaller != null && IdPublicUserTalk != null) {
 
-                var UserCaller = this.Context.Users.FirstOrDefault(x => x.Id == IdUserCaller);
-                var UserToTalk = this.Context.Users.FirstOrDefault(x => x.Id == IdUserTalk);
+                var UserCaller = this.Context.UserPublic.FirstOrDefault(x => x.IdPublic == IdPublicUserCaller);
+                var UserToTalk = this.Context.UserPublic.FirstOrDefault(x => x.IdPublic == IdPublicUserTalk);
                 if (UserCaller != null && UserToTalk != null)
                 {
                     var chatmessages = this.Context.ChatMessages.Where(
-                            x => x.IdUserReceiver == UserCaller.Id && x.IdUserSender == UserToTalk.Id ||
-                                x.IdUserSender == UserCaller.Id && x.IdUserReceiver == UserToTalk.Id
+                            x => x.IdUserReceiver == UserCaller.IdPublic && x.IdUserSender == UserToTalk.IdPublic ||
+                                x.IdUserSender == UserCaller.IdPublic && x.IdUserReceiver == UserToTalk.IdPublic
                             ).Include(x => x.MessagesList).FirstOrDefault();
 
-                    var UserToSend = this.Context.Users.FirstOrDefault(x => x.Id == UserToTalk.Id);
+                    var UserToSend = this.Context.Users.FirstOrDefault(x => x.Id == UserToTalk.IdPublic);
 
                     if (chatmessages != null)
                     {
