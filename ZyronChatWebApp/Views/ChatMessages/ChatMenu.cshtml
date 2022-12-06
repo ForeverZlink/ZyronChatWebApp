@@ -4,7 +4,6 @@
 @model ZyronChatWebApp.Models.Messages
 
 
-
 @{
     ViewData["Title"] = "Your list of contacts";
     ViewBag.ChatMessage = Model;
@@ -44,15 +43,66 @@
         </div>
     </div>
 
+
+        
+
+          
+
+          
+       
 @if(@ViewBag.AllMessages != null){
+    <!-- Message Box -->
+    <div class="overflow-scroll">
+        <div class="row message" id="conversation">
 
-@foreach (var Message in ViewBag.AllMessages)
-    {
-        <h3>@Message.Message </h3>
+       
+                @foreach (Messages Message in ViewBag.AllMessages)
+                    {
+                        
+                                @if(User.Identity.Name != Message.Sender){
+                                    <div class="row ">
+                                        <div class="col-sm-12 ">
+                                          <div class="receiver">
+                                              <div class="alert alert-secondary bg-dark" role="alert">
+                                                  <p class="text-start text-light fs-4">@Message.Message</p>
+                                                  <h6><span class="text-light badge-start badge-pill badge-primary">@Message.DateSended</span> </h6>
+                                                </div>
+                                        
+                                          </div>
+                                        </div>
+                                      </div>
+                                 
+                     
+              
+            
+                                }else{
+                                    <div class="row ">
+                                        <div class="col-sm-12 ">
+                                          <div class="sender">
+                                            <div class="alert alert-success" role="alert">
+                                                <p class="text-end fs-4">@Message.Message</p>
 
-    }
+                                                <div class="position-absolute bottom-0 end-0">
 
+                                                    <h6><span class="badge-end badge-pill badge-primary">@Message.DateSended</span> </h6>
 
+                                                </div>
+                                                    
+                                                    
+                                                
+                                               
+                                            </div>
+                                          </div>
+                                        </div>
+                                     </div>
+                                 
+                                }
+                 
+        
+
+                    }
+        </div>
+    </div>
 }else{
     <figure class="text-center">
       <blockquote class="blockquote">
