@@ -89,7 +89,7 @@ namespace ZyronChatWebApp.Logics
                     if (chatmessages != null)
                     {
                         var AllMessages = chatmessages.MessagesList
-                            .OrderBy(x => x.DateSended).OrderBy(x => x.TimeSended).ToArray();
+                            .OrderByDescending(x => x.DateSended).ToArray();
 
                         return AllMessages;
 
