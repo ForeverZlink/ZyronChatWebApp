@@ -121,7 +121,10 @@ namespace ZyronChatWebApp.Logics
                 return null;
             }
 
-            var  ChatMessagesObjects = this.Context.ChatMessages.Include("MessagesList").Where(x => x.IdUserSender == IdPublicUserCaller || x.IdUserReceiver == IdPublicUserCaller).ToList();
+            var ChatMessagesObjects = this.Context.ChatMessages
+                                        .Include("MessagesList").Include("UserSender").Include("UserReceiver")
+                                        .Where(x => x.IdUserSender == IdPublicUserCaller || x.IdUserReceiver == IdPublicUserCaller).Where(x=>x.MessagesList.Count>0)
+                                        .ToList();
 
             //The first Object is with the more recent message
             var ChatsOrderly = new List<ChatMessages>();
@@ -139,7 +142,7 @@ namespace ZyronChatWebApp.Logics
             foreach (var ChatToOrder in ChatMessagesObjects)
             {
                 var MostRecentMessageOfTheChatToOrder = ChatToOrder.MessagesList.FirstOrDefault();
-                
+               
                 if (ChatsOrderly.Count == 0)
                 {
                     ChatsOrderly.Add(ChatToOrder);
