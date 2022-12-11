@@ -59,6 +59,8 @@ namespace ZyronChatWebApp.Controllers
                 this.logger.LogInformation("Starting to setting ViewBag propertys");
 
                 this.logger.LogInformation("Setting First Viewbag property ");
+                this.ViewBag.UsernameUserToSend = this.Context.UserPublic.Where(x => x.IdPublic == IdPublicUserToTalk).FirstOrDefault().Username;
+                
                 this.ViewBag.UserToSend = IdPublicUserToTalk;
 
                 this.logger.LogInformation("Setting Second ViewBag propertys");
