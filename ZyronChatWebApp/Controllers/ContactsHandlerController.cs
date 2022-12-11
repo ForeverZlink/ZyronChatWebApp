@@ -47,6 +47,7 @@ namespace ZyronChatWebApp.Controllers
                 Log.Information("Verifying if the list of contact are valid");
                 if (listOfContacts != null)
                 {
+                    listOfContacts.ContactsInformations.OrderBy(x => x.Surname);
                     Log.Information("Sucess, list of contact is valid");
 
                     Log.Information("Returning the view");
@@ -113,7 +114,7 @@ namespace ZyronChatWebApp.Controllers
                         ViewBag.ContactAddedWithSucess = true;
 
                         Log.Information("Returning the view ", DateTime.Now);
-                        return View();
+                        return RedirectToAction("Index", "DashManagement");
                     }
                     else
                     {
