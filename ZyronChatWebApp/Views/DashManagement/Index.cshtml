@@ -11,6 +11,24 @@
             @if (Model != null)
             {
             <ul id="messagesList"></ul>
+                @foreach (ChatMessages chat in Model)
+                {
+
+                            if(chat.UserReceiver.Username != User.Identity.Name  ){
+                                <div class="p-3 mb-2 bg-secondary text-white border-success">
+                                    <h3>@chat.UserReceiver.Username</h3>
+                                    <div class="text-white"><p>Last Message: @chat.MessagesList.FirstOrDefault().Message.ToString()</p></div>
+                                </div>
+
+                            }else if(chat.UserSender.Username != User.Identity.Name){
+                                <div class="p-3 mb-2 bg-secondary text-white border-success">
+                                    <h3>@chat.UserSender.Username</h3>
+                                                <div class="text-white"><p>Last Message: @chat.MessagesList.FirstOrDefault().Message.ToString()</p></div>
+                                </div>
+                            }
+                }
+            }
+            
         </div>
     </div>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
