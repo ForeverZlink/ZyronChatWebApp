@@ -5,13 +5,36 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
 //Disable the send button until connection is established.
 document.getElementById("sendButton").disabled = true;
 
-connection.on("ReceiveMessagePrivate", function ( message) {
-    var li = document.createElement("li");
-    document.getElementById("messagesList").appendChild(li);
+connection.on("ReceiveMessagePrivate", function (message) {
+    var date = new Date();
+    
+    var div = document.createElement("div");
+    div.classList.add("alert", "alert-secondary", "bg-dark");
+
+    var MessageHasArrived = document.createElement("h4");
+    MessageHasArrived.innerText = "New message has arrived!";
+    MessageHasArrived.classList.add("text-success");
+
+    var p = document.createElement("p");
+    p.classList.add("text-start", "text-light", "fs-4");
+
+    var br = document.createElement("br")
+    
+    p.innerText = message
+    p.append(br)
+    p.append(date.toLocaleString())
+    
+    div.append(MessageHasArrived)
+    div.append(p)
+
+    document.getElementById("NewMessagesNow").prepend(div);
     // We can assign user-supplied strings to an element's textContent because it
-    // is not interpreted as markup. If you're assigning in any other way, you 
+    // is not interpreted as markup. If you're assigning in any other way, you
     // should be aware of possible script injection concerns.
-    li.textContent = message;
+    
+    
+
+    
 });
 
 connection.start().then(function () {
