@@ -8,7 +8,13 @@
     ViewData["Title"] = "Your list of contacts";
     ViewBag.ChatMessage = Model;
 }
-
+<style>
+    .menu{
+  width: 700px;
+  height: 700px;
+  overflow-y: scroll;
+}
+</style>
  <div class="container">
         <div class="row">&nbsp;</div>
         <h3>@ViewBag.UsernameUserToSend</h3>
@@ -57,7 +63,7 @@
        
 @if(@ViewBag.AllMessages != null){
     <!-- Message Box -->
-    <div class="overflow-scroll">
+    <div class="menu">
         <div class="row message" id="conversation">
             <div id="NewMessagesNow"></div>
        
@@ -69,7 +75,7 @@
                                         <div class="col-sm-12 ">
                                           <div class="receiver" id="receiver">
                                               <div class="alert alert-secondary bg-dark" role="alert">
-                                                  <p class="text-start text-light fs-4">@Message.Message</p>
+                                                  <p class="text-start text-light fs-4 text-break">@Message.Message</p>
                                                   <h6><span class="text-light badge-start badge-pill badge-primary">@Message.DateSended</span> </h6>
                                                 </div>
                                         
@@ -85,7 +91,7 @@
                                         <div class="col-sm-12 ">
                                           <div class="sender">
                                             <div class="alert alert-success" role="alert">
-                                                <p class="text-end fs-4">@Message.Message</p>
+                                                <p class="text-end fs-4 text-break">@Message.Message</p>
 
                                                 <div class="position-absolute bottom-0 end-0">
 
@@ -112,7 +118,7 @@
     <figure class="text-center">
       <blockquote class="blockquote">
         <h4>Você ainda não trocou mensagens com esse contato</h4>
-      </blockquote>
+      </blockquote> 
       <figcaption class="blockquote-footer">
         A solidão é um caminho válido, porém árduo.
       </figcaption>
@@ -122,4 +128,4 @@
 
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
-<script src="~/js/chatprivate_updated.js"></script>
+<script src="~/js/chatprivate_updated1.js"></script>
