@@ -16,7 +16,7 @@ connection.on("ReceiveMessagePrivate", function (message) {
     MessageHasArrived.classList.add("text-success");
 
     var p = document.createElement("p");
-    p.classList.add("text-start", "text-light", "fs-4");
+    p.classList.add("text-start", "text-light", "fs-4","text-break");
 
     var br = document.createElement("br")
     
@@ -49,5 +49,25 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     connection.invoke("SendMessagePrivate", user, message).catch(function (err) {
         return console.error(err.toString());
     });
+    var date = new Date();
+
+    var div = document.createElement("div");
+    div.classList.add("alert", "alert-success");
+
+    
+    var p = document.createElement("p");
+    p.classList.add("text-end", "text-dark", "fs-4","text-break");
+
+    var br = document.createElement("br")
+
+    p.innerText = message
+    p.append(br)
+    p.append(date.toLocaleString())
+
+   
+    div.append(p)
+
+    document.getElementById("NewMessagesNow").prepend(div);
     event.preventDefault();
 });
+
