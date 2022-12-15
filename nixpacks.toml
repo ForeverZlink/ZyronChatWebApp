@@ -1,3 +1,0 @@
-[phases.setup]
- # Install the ffmpeg package from Nix
-aptPkgs = ["...", "libicu-dev"]
