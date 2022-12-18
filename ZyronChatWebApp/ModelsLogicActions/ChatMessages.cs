@@ -151,14 +151,14 @@ namespace ZyronChatWebApp.Logics
 
                 else {
                     var MessageMoreRecentInListOrderned = ChatsOrderly.FirstOrDefault().MessagesList.FirstOrDefault();
-                    var MessageMoreOlderInListOrderned = ChatsOrderly.LastOrDefault().MessagesList.LastOrDefault();
+                    var MessageMoreRecentOfLastObjectInListOrderned = ChatsOrderly.LastOrDefault().MessagesList.FirstOrDefault();
 
                     if (MostRecentMessageOfTheChatToOrder.DateSended.CompareTo(MessageMoreRecentInListOrderned.DateSended) > 0)
                     {
                         ChatsOrderly.Insert(0, ChatToOrder);
 
                     }
-                    else if (ChatToOrder.MessagesList.FirstOrDefault().DateSended.CompareTo(MessageMoreOlderInListOrderned.DateSended) < 0)
+                    else if (ChatToOrder.MessagesList.FirstOrDefault().DateSended.CompareTo(MessageMoreRecentOfLastObjectInListOrderned.DateSended) < 0)
                     {
                         ChatsOrderly.Add(ChatToOrder);
                     }
