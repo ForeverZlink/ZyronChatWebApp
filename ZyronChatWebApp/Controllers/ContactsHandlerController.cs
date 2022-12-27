@@ -43,11 +43,12 @@ namespace ZyronChatWebApp.Controllers
 
                 Log.Information("Getting the list of contact of the users ");
                 var listOfContacts = this.Context.UserScheduleListOfContacts.Include("ContactsInformations").FirstOrDefault(x => x.User.IdPrivate== IdUser);
+                
 
                 Log.Information("Verifying if the list of contact are valid");
                 if (listOfContacts != null)
                 {
-                    listOfContacts.ContactsInformations.OrderBy(x => x.Surname);
+                    listOfContacts.ContactsInformations.OrderBy(x => x.UsernameOfIdentification);
                     Log.Information("Sucess, list of contact is valid");
 
                     Log.Information("Returning the view");
