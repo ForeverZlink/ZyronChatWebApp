@@ -26,6 +26,16 @@ namespace ZyronChatWebApp.Logics
                 return null;
             }
         }
+
+        public string SetMessagesAsReceived(Messages[] MessagesToUpdate) 
+        {
+            foreach (var message in MessagesToUpdate)
+            {
+                message.Notified = true;
+            }
+            return "";
+                    
+        }
         public string SaveMessagesChatBetweenTwoUsers(string IdPublicUserCaller, string IdPublicUserToSend, string message)
         {
             //Save the message between two users
