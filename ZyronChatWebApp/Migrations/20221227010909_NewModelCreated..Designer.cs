@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZyronChatWebApp.Data;
 
@@ -11,9 +12,10 @@ using ZyronChatWebApp.Data;
 namespace ZyronChatWebApp.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20221227010909_NewModelCreated.")]
+    partial class NewModelCreated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -221,9 +223,6 @@ namespace ZyronChatWebApp.Migrations
 
                     b.Property<string>("NotificationsId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("Notified")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Sender")
                         .IsRequired()

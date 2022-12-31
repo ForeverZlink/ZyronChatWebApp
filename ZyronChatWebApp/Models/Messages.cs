@@ -16,7 +16,7 @@ namespace ZyronChatWebApp.Models
         public TimeSpan TimeSended { get; set; }
         public string Message { get; set; }
 
-
+        public bool Notified { get; set; }
         
         public string ChatMessagesId { get; set; }
         public ChatMessages ChatMessages { get; set; }
