@@ -122,6 +122,11 @@ namespace ZyronChatWebApp.Controllers.Account
                 {
                     var List = new UserScheduleListOfContacts() { UserId = IdUserPublic };
                     this.Context.Add(List);
+
+                    //Creating Guid Object related with user 
+                    var GuidNotification = Guid.NewGuid().ToString();
+                    var notification = new Notifications() {Id=GuidNotification, IdUserCreatorOfNotification = IdUserPublic };
+                    this.Context.Add(notification);
                     this.Context.SaveChanges();
 
                     ViewBag.UserCreatedWithSucess = true;
