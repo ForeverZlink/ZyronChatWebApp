@@ -46,7 +46,11 @@ namespace ZyronChatWebApp.Logics
                     string id = Guid.NewGuid().ToString();
                     DateTime DatetimeTodaySended = DateTime.UtcNow;
                     TimeSpan TimeMessageSended = DateTime.UtcNow.TimeOfDay;
-                    var MessageSaved = new Messages() { Id = id, Sender = user.Username, Message = message, ChatMessagesId = Chat.Id, TimeSended = TimeMessageSended, DateSended = DatetimeTodaySended };
+                    var MessageSaved = new Messages() {
+                        Id = id, Sender = user.Username, Message = message, 
+                        ChatMessagesId = Chat.Id, TimeSended = TimeMessageSended, 
+                        DateSended = DatetimeTodaySended, Notified=false };
+
 
 
                     this.Context.Messages.Add(MessageSaved);
