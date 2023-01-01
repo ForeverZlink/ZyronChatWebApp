@@ -23,9 +23,13 @@ builder.Logging.AddSerilog(Log.Logger = new LoggerConfiguration()
                 .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
                 .CreateLogger());
 
+string UserContextConnectionStringEnviroment = System.Environment.GetEnvironmentVariable("UserContextConnectionStringEnviroment");
+builder.Configuration.AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables($"UserContextConnectionStringEnviroment:{UserContextConnectionStringEnviroment}");
+
 builder.Services.AddDbContext<UserContext>(
-    options => options.UseSqlServer(
-        builder.Configuration.GetConnectionString("UserContext")
+    options => options.UseNpgsql(
+        builder.Configuration.GetConnectionString("UserContextConnectionStringEnviroment")
         )
     );
 builder.Services.AddIdentity<UserModelCustom,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
