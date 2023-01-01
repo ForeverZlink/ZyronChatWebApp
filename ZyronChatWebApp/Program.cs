@@ -24,12 +24,12 @@ builder.Logging.AddSerilog(Log.Logger = new LoggerConfiguration()
                 .CreateLogger());
 
 string UserContextConnectionStringEnviroment = System.Environment.GetEnvironmentVariable("UserContextConnectionStringEnviroment");
-builder.Configuration.AddJsonFile("appsettings.json")
-    .AddEnvironmentVariables($"UserContextConnectionStringEnviroment:{UserContextConnectionStringEnviroment}");
 
+
+Console.WriteLine(UserContextConnectionStringEnviroment);
 builder.Services.AddDbContext<UserContext>(
     options => options.UseNpgsql(
-        builder.Configuration.GetConnectionString("UserContextConnectionStringEnviroment")
+        builder.Configuration.GetConnectionString(UserContextConnectionStringEnviroment)
         )
     );
 builder.Services.AddIdentity<UserModelCustom,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
