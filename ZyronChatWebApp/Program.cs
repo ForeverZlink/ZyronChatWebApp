@@ -28,8 +28,7 @@ string UserContextConnectionStringEnviroment = System.Environment.GetEnvironment
 
 Console.WriteLine(UserContextConnectionStringEnviroment);
 builder.Services.AddDbContext<UserContext>(
-    options => options.UseNpgsql(
-        builder.Configuration.GetConnectionString(UserContextConnectionStringEnviroment)
+    options => options.UseNpgsql(UserContextConnectionStringEnviroment
         )
     );
 builder.Services.AddIdentity<UserModelCustom,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
