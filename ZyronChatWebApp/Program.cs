@@ -27,6 +27,7 @@ string UserContextConnectionStringEnviroment = System.Environment.GetEnvironment
 builder.Configuration.AddJsonFile("appsettings.json")
     .AddEnvironmentVariables($"UserContextConnectionStringEnviroment:{UserContextConnectionStringEnviroment}");
 
+Console.WriteLine(UserContextConnectionStringEnviroment);
 builder.Services.AddDbContext<UserContext>(
     options => options.UseNpgsql(
         builder.Configuration.GetConnectionString("UserContextConnectionStringEnviroment")
