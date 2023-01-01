@@ -13,6 +13,7 @@ WORKDIR /src
 COPY . .
 RUN dotnet restore 
 COPY . .
+RUN dotnet ef database update
 WORKDIR "/src/ZyronChatWebApp"
 run  dotnet tool install --global dotnet-ef
 
