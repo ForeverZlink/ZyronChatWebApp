@@ -16,6 +16,7 @@ COPY . .
 
 WORKDIR "/src/ZyronChatWebApp"
 run  dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
 RUN dotnet-ef database update
 
 RUN dotnet build  -c Release -o /app/build
